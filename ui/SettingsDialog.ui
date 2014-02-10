@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>231</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Settings</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="inkscapeLineEdit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="temporaryDirectoryLabel">
+        <property name="text">
+         <string>Temporary Directory</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="temporaryDirectoryLineEdit"/>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="convertLineEdit"/>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="identifyLineEdit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="inkscapeLabel">
+        <property name="text">
+         <string>Inkscape</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="convertLabel">
+        <property name="text">
+         <string>Convert</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="identifyLabel">
+        <property name="text">
+         <string>Identify</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
