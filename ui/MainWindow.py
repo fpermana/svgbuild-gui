@@ -3,6 +3,7 @@
 """
 Module implementing MainWindow.
 """
+import re
 
 from PyQt4.QtGui import QMainWindow, QFileDialog, QColorDialog, QDialog, QApplication
 from PyQt4.QtCore import pyqtSignature, QDir, QString, QRegExp, Qt, QThread
@@ -103,7 +104,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.outputTextEdit.setText("")
                     self.svgbuild.setIsRunning(True)
                     self.svgbuild.setFilename(self.openFileLineEdit.text())
-                    self.svgbuild.setSingleOption("folder",  self.folderNameLineEdit.text())
+                    workingDirectory = re.sub(r'[^\/]*$', '', str(self.openFileLineEdit.text()))
+                    self.svgbuild.setSingleOption("folder",  "%s/%s" % (workingDirectory, self.folderNameLineEdit.text()))
                     
                     self.svgbuild.setSingleOption('path',  self.simplePathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('fullpath',  self.fullPathCheckBox.checkState() == Qt.Checked)
