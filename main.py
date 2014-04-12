@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-#!/usr/bin/python
+#!/usr/bin/env python
 
 from PyQt4.QtGui import QApplication
 from ui.MainWindow import MainWindow

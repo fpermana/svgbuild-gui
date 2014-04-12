@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/fpermana/python/SVGBuild/ui/MainWindow.ui'
+# Form implementation generated from reading ui file '/home/fpermana/repositories/SVGBuild/ui/MainWindow.ui'
 #
-# Created: Tue Jan 28 22:47:05 2014
+# Created: Sat Apr 12 12:15:34 2014
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -36,6 +36,9 @@ class Ui_MainWindow(object):
         self.fullPathCheckBox = QtGui.QCheckBox(self.buildGroupBox)
         self.fullPathCheckBox.setObjectName(_fromUtf8("fullPathCheckBox"))
         self.verticalLayout.addWidget(self.fullPathCheckBox)
+        self.fillPathCheckBox = QtGui.QCheckBox(self.buildGroupBox)
+        self.fillPathCheckBox.setObjectName(_fromUtf8("fillPathCheckBox"))
+        self.verticalLayout.addWidget(self.fillPathCheckBox)
         self.textCheckBox = QtGui.QCheckBox(self.buildGroupBox)
         self.textCheckBox.setObjectName(_fromUtf8("textCheckBox"))
         self.verticalLayout.addWidget(self.textCheckBox)
@@ -128,16 +131,6 @@ class Ui_MainWindow(object):
         self.cameraFrameLabel = QtGui.QLabel(self.colorGroupBox)
         self.cameraFrameLabel.setObjectName(_fromUtf8("cameraFrameLabel"))
         self.gridLayout.addWidget(self.cameraFrameLabel, 2, 0, 1, 1)
-        self.backgroundColorWidget = QtGui.QWidget(self.colorGroupBox)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.backgroundColorWidget.sizePolicy().hasHeightForWidth())
-        self.backgroundColorWidget.setSizePolicy(sizePolicy)
-        self.backgroundColorWidget.setMinimumSize(QtCore.QSize(25, 0))
-        self.backgroundColorWidget.setStyleSheet(_fromUtf8("background-color: white"))
-        self.backgroundColorWidget.setObjectName(_fromUtf8("backgroundColorWidget"))
-        self.gridLayout.addWidget(self.backgroundColorWidget, 1, 1, 1, 1)
         self.backgroundToolButton = QtGui.QToolButton(self.colorGroupBox)
         self.backgroundToolButton.setObjectName(_fromUtf8("backgroundToolButton"))
         self.gridLayout.addWidget(self.backgroundToolButton, 1, 2, 1, 1)
@@ -150,6 +143,7 @@ class Ui_MainWindow(object):
         self.markerComboBox = QtGui.QComboBox(self.colorGroupBox)
         self.markerComboBox.setMinimumSize(QtCore.QSize(125, 0))
         self.markerComboBox.setObjectName(_fromUtf8("markerComboBox"))
+        self.markerComboBox.addItem(_fromUtf8(""))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/diamond.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.markerComboBox.addItem(icon, _fromUtf8(""))
@@ -160,6 +154,16 @@ class Ui_MainWindow(object):
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/triangle.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.markerComboBox.addItem(icon2, _fromUtf8(""))
         self.gridLayout.addWidget(self.markerComboBox, 3, 1, 1, 1)
+        self.backgroundColorWidget = QtGui.QWidget(self.colorGroupBox)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.backgroundColorWidget.sizePolicy().hasHeightForWidth())
+        self.backgroundColorWidget.setSizePolicy(sizePolicy)
+        self.backgroundColorWidget.setMinimumSize(QtCore.QSize(25, 0))
+        self.backgroundColorWidget.setStyleSheet(_fromUtf8("background-color: white"))
+        self.backgroundColorWidget.setObjectName(_fromUtf8("backgroundColorWidget"))
+        self.gridLayout.addWidget(self.backgroundColorWidget, 1, 1, 1, 1)
         self.gridLayout_2.addWidget(self.colorGroupBox, 0, 2, 1, 1)
         self.canvasGroupBox = QtGui.QGroupBox(self.optionsGroupBox)
         self.canvasGroupBox.setObjectName(_fromUtf8("canvasGroupBox"))
@@ -272,6 +276,7 @@ class Ui_MainWindow(object):
         self.buildGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Build", None, QtGui.QApplication.UnicodeUTF8))
         self.simplePathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Simple Path", None, QtGui.QApplication.UnicodeUTF8))
         self.fullPathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Full Path", None, QtGui.QApplication.UnicodeUTF8))
+        self.fillPathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Fill Path", None, QtGui.QApplication.UnicodeUTF8))
         self.textCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Text", None, QtGui.QApplication.UnicodeUTF8))
         self.imageCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Image", None, QtGui.QApplication.UnicodeUTF8))
         self.rangeGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Range", None, QtGui.QApplication.UnicodeUTF8))
@@ -290,9 +295,10 @@ class Ui_MainWindow(object):
         self.backgroundToolButton.setText(QtGui.QApplication.translate("MainWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.cameraFrameToolButton.setText(QtGui.QApplication.translate("MainWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.markerLabel.setText(QtGui.QApplication.translate("MainWindow", "Marker", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerComboBox.setItemText(0, QtGui.QApplication.translate("MainWindow", "Diamond", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerComboBox.setItemText(1, QtGui.QApplication.translate("MainWindow", "Scissor", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerComboBox.setItemText(2, QtGui.QApplication.translate("MainWindow", "Triangle", None, QtGui.QApplication.UnicodeUTF8))
+        self.markerComboBox.setItemText(0, QtGui.QApplication.translate("MainWindow", "None", None, QtGui.QApplication.UnicodeUTF8))
+        self.markerComboBox.setItemText(1, QtGui.QApplication.translate("MainWindow", "Diamond", None, QtGui.QApplication.UnicodeUTF8))
+        self.markerComboBox.setItemText(2, QtGui.QApplication.translate("MainWindow", "Scissor", None, QtGui.QApplication.UnicodeUTF8))
+        self.markerComboBox.setItemText(3, QtGui.QApplication.translate("MainWindow", "Triangle", None, QtGui.QApplication.UnicodeUTF8))
         self.canvasGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Canvas", None, QtGui.QApplication.UnicodeUTF8))
         self.heightLabel.setText(QtGui.QApplication.translate("MainWindow", "Height", None, QtGui.QApplication.UnicodeUTF8))
         self.widthLabel.setText(QtGui.QApplication.translate("MainWindow", "Width", None, QtGui.QApplication.UnicodeUTF8))

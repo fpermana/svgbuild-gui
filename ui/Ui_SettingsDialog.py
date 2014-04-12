@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/fpermana/python/SVGBuild/ui/SettingsDialog.ui'
+# Form implementation generated from reading ui file '/home/fpermana/repositories/SVGBuild/ui/SettingsDialog.ui'
 #
-# Created: Wed Jan 29 00:00:43 2014
+# Created: Sat Apr 12 12:15:35 2014
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!

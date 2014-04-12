@@ -32,6 +32,7 @@ class SVGBuild(QtCore.QObject):
             'image': False,
             'path': False,
             'fullpath': False,
+            'fillpath': False,
             'top': False,
             'page': False,
             'combine': False,
@@ -102,15 +103,15 @@ class SVGBuild(QtCore.QObject):
 
         folder_name = [ self.options['folder'], self.options['name'] ]
         
-        if not QtCore.QFile.exists(self.filename):
+        if not os.path.exists(self.filename):
                print 'SVG files were not found.'
         else:
-            fileInfo = QtCore.QFileInfo(self.filename);
+            fileBaseName = os.path.splitext(os.path.basename(self.filename))
             
             if folder_name[0] == 'movie':
-                self.options['folder'] = fileInfo.baseName()
+                self.options['folder'] = fileBaseName[0]
             if folder_name[1] == 'movie':
-                self.options['name'] = fileInfo.baseName()
+                self.options['name'] = fileBaseName[0]
             if self.options['page']:
                 self.options['folder'] += '_page'
             if self.options['backward']:
@@ -138,11 +139,13 @@ class SVGBuild(QtCore.QObject):
                     self.addMarker(defs_element, self.options['marker'])
                 else:
                    self.marker = '%s' % markers[0].attrib['id']
-            
+
             self.printText.emit('Surveyed %d elements.' % elementCount)
             
             self.camera = Camera(self.options)
             self.camera.printText.connect(self.printText)
+#            self.finished.emit()
+#            return 0
             
             if self.camera.survey(self.svg):
                 #self.printText.emit('ok')
@@ -329,7 +332,58 @@ class SVGBuild(QtCore.QObject):
                 width = page_width / page_height
             else:
                 width = page_height / page_width
-        hl = [
+        
+        style_dict = {}
+        style_list = style.split(';')
+        for s in style_list:
+            w = s.split(':')
+            style_dict[w[0]] = w[1]
+        
+#        print ';'.join("%s:%r" % (key,val) for (key,val) in style_dict.iteritems())
+        
+        hl = {
+              'opacity': '1', 
+              'overflow': 'visible', 
+              'fill-opacity': '0',
+              'fill-rule': 'nonzero',
+              'stroke-linecap': 'round',
+              'stroke-linejoin': 'round',
+              'marker': 'none',
+              'marker-start': 'none',
+              'marker-mid': 'none',
+              'marker-end': 'none',
+              'stroke-miterlimit': '4',
+              'stroke-dasharray': 'none',
+              'stroke-dashoffset': '0',
+              'stroke-opacity': '1',
+              'visibility': 'visible',
+              'display': 'inline',
+              'enable-background': 'accumulate', 
+              'stroke-width': '%f' % width
+              }
+              
+        if self.options['line'] == 'default':
+            if 'line' in style_dict:
+                hl['stroke'] = style_dict['line']
+            else:
+                hl['stroke'] = '#000000'
+        else:
+            hl['stroke'] = self.options['line']
+
+        if self.options['fullpath']:
+#            hl.append('marker-end:url(#%s)' % self.marker)
+            hl['marker-end'] = 'url(#%s)' % self.marker
+            #~ hl.append('marker-start:url(#Arrow1Lstart)')
+            #~ hl[12] = 'marker-end:url(#SquareL)'
+#        else:
+#            hl.append('marker-end:none')
+            #~ hl.append('marker-start:none')
+            
+        if self.options['fillpath']:
+#            hl.append('marker-end:url(#%s)' % self.marker)
+            hl['fill-opacity'] = '1'
+            
+        '''hl = [
         'opacity:1', 'overflow:visible',
         'fill:none',
         'fill-opacity:0.',
@@ -345,19 +399,12 @@ class SVGBuild(QtCore.QObject):
         'stroke-dashoffset:0', 'stroke-opacity:1',
         'visibility:visible', 'display:inline',
         'enable-background:accumulate' 
-        ]
-
-        if self.options['fullpath']:
-            hl.append('marker-end:url(#%s)' % self.marker)
-            #~ hl.append('marker-start:url(#Arrow1Lstart)')
-            #~ hl[12] = 'marker-end:url(#SquareL)'
-        else:
-            hl.append('marker-end:none')
-            #~ hl.append('marker-start:none')
-
-        hairline = ';'.join(hl)
+        ]'''
         
-        #~ print hairline
+        
+#        hairline = ';'.join(hl)
+        hairline = ';'.join("%s:%s" % (key,val) for (key,val) in hl.iteritems())
+        print hairline
 
         entity.attrib['style'] = hairline
         # scan the control points
@@ -406,7 +453,6 @@ class SVGBuild(QtCore.QObject):
         camera.shoot(svg)
         
     def addMarker(self,  element, name='diamond'):
-        print name
         if name == 'diamond':
             marker_element = etree.SubElement(element, 'marker', id = 'EmptyDiamondL')
             marker_element.set('{http://www.inkscape.org/namespaces/inkscape}stockid', 'EmptyDiamondL')
@@ -454,4 +500,6 @@ class SVGBuild(QtCore.QObject):
             marker_path.set('transform', "scale(0.8) translate(-6,0)")
 
             self.marker = '%s' % marker_element.attrib['id']
+        else:
+            self.marker = 'none'
             

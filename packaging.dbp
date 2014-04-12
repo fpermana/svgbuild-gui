@@ -1,0 +1,88 @@
+[DEBREATE-0.7.7]
+<<CTRL>>
+Package: svgbuild
+Version: 0.1.0
+Section: graphics
+Maintainer: Fandy Permana <f.permana@gmail.com>
+Priority: optional
+Architecture: all
+Depends: python-qt4, imagemagick, inkscape (>=0.4.8), python-pythonmagick, python-lxml, python2.6 | python (>>2.6)
+Description: Create sequences of images from Inkscape's SVG files
+
+<</CTRL>>
+<<FILES>>
+1
+/home/fpermana/repositories/SVGBuild/main.py* -> main.py -> /usr/share/svgbuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/interpolations.py* -> interpolations.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/SVG.py -> SVG.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/Settings.py -> Settings.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/vectors.py* -> vectors.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/__init__.py -> __init__.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/Camera.py -> Camera.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/SVGBuild.py -> SVGBuild.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/SVGBuild/Utils.py -> Utils.py -> /usr/share/svgbuild/SVGBuild
+/home/fpermana/repositories/SVGBuild/.eric4project/SVG Build.e4t -> SVG Build.e4t -> /usr/share/svgbuild/.eric4project
+/home/fpermana/repositories/SVGBuild/.eric4project/SVG Build.e4q -> SVG Build.e4q -> /usr/share/svgbuild/.eric4project
+/home/fpermana/repositories/SVGBuild/ui/exit.png -> exit.png -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/scissor.png -> scissor.png -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/triangle.png -> triangle.png -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/SettingsDialog.ui -> SettingsDialog.ui -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/SettingsDialog.py -> SettingsDialog.py -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/MainWindow.ui -> MainWindow.ui -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/__init__.py -> __init__.py -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/MainWindow.py -> MainWindow.py -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/diamond.png -> diamond.png -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/resource.qrc -> resource.qrc -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/resource_rc.py -> resource_rc.py -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/Ui_SettingsDialog.py -> Ui_SettingsDialog.py -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/ui/Ui_MainWindow.py -> Ui_MainWindow.py -> /usr/share/svgbuild/ui
+/home/fpermana/repositories/SVGBuild/SVG Build.e4p -> SVG Build.e4p -> /usr/share/svgbuild
+/home/fpermana/repositories/SVGBuild/icon.png -> icon.png -> /usr/share/svgbuild
+/home/fpermana/repositories/SVGBuild/__init__.py -> __init__.py -> /usr/share/svgbuild
+/home/fpermana/repositories/SVGBuild/README.md -> README.md -> /usr/share/svgbuild
+<</FILES>>
+<<SCRIPTS>>
+<<PREINST>>
+0
+<</PREINST>>
+<<POSTINST>>
+1
+#! /bin/bash -e
+
+ln -fs "/usr/share/svgbuild/main.py" "/usr/bin/svgbuild"
+<</POSTINST>>
+<<PRERM>>
+1
+#! /bin/bash -e
+
+rm "/usr/bin/svgbuild"
+<</PRERM>>
+<<POSTRM>>
+0
+<</POSTRM>>
+<</SCRIPTS>>
+<<CHANGELOG>>
+<<DEST>>DEFAULT<</DEST>>
+
+<</CHANGELOG>>
+<<COPYRIGHT>>
+
+<</COPYRIGHT>>
+<<MENU>>
+1
+Name=SVG Build
+Version=1.0
+Exec=svgbuild
+Comment=Launch svgbuild
+Icon=/usr/share/svgbuild/icon.png
+Type=Application
+Terminal=false
+StartupNotify=true
+Encoding=UTF-8
+Categories=Graphics;
+<</MENU>>
+<<BUILD>>
+0
+1
+1
+<</BUILD>>

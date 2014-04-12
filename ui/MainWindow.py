@@ -18,6 +18,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     """
     Class documentation goes here.
     """
+    lineColorName = ""
+    
     def __init__(self, parent = None):
         """
         Constructor
@@ -25,7 +27,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
         
+#        self.checkBox.setVisible(False)
+        
         self.svgbuild = SVGBuild()
+        self.lineColorName = self.svgbuild.getSingleOption('line')
         self.svgbuild.printText.connect(self.appendText)
     
     @pyqtSignature("")
@@ -35,8 +40,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         lineColorDialog = QColorDialog(self)
         if lineColorDialog.exec_() == QDialog.Accepted:
-            self.lineColorWidget.setStyleSheet("QWidget { background-color: %s }" % lineColorDialog.selectedColor().name())
-            self.svgbuild.setSingleOption('line',  lineColorDialog.selectedColor().name())
+            self.lineColorName = str(lineColorDialog.selectedColor().name())
+            self.lineColorWidget.setStyleSheet("QWidget { background-color: %s }" % self.lineColorName)
+            self.svgbuild.setSingleOption('line',  self.lineColorName)
         # TODO: not implemented yet
 #        raise NotImplementedError
     
@@ -47,8 +53,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         backgroundColorDialog = QColorDialog(self)
         if backgroundColorDialog.exec_() == QDialog.Accepted:
-            self.backgroundColorWidget.setStyleSheet("QWidget { background-color: %s }" % backgroundColorDialog.selectedColor().name())
-            self.svgbuild.setSingleOption('background',  backgroundColorDialog.selectedColor().name())
+            backgroundColorName = str(backgroundColorDialog.selectedColor().name())
+            self.backgroundColorWidget.setStyleSheet("QWidget { background-color: %s }" % backgroundColorName)
+            self.svgbuild.setSingleOption('background',  backgroundColorName)
         # TODO: not implemented yet
 #        raise NotImplementedError
     
@@ -59,8 +66,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         frameColorDialog = QColorDialog(self)
         if frameColorDialog.exec_() == QDialog.Accepted:
-            self.cameraFrameColorWidget.setStyleSheet("QWidget { background-color: %s }" % frameColorDialog.selectedColor().name())
-            self.svgbuild.setSingleOption('frame',  frameColorDialog.selectedColor().name())
+            frameColorName = str(frameColorDialog.selectedColor().name())
+            self.cameraFrameColorWidget.setStyleSheet("QWidget { background-color: %s }" % frameColorName)
+            self.svgbuild.setSingleOption('frame',  frameColorName)
         # TODO: not implemented yet
 #        raise NotImplementedError
     
@@ -103,12 +111,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if not self.svgbuild.isRunning:
                     self.outputTextEdit.setText("")
                     self.svgbuild.setIsRunning(True)
-                    self.svgbuild.setFilename(self.openFileLineEdit.text())
+                    self.svgbuild.setFilename(str(self.openFileLineEdit.text()))
                     workingDirectory = re.sub(r'[^\/]*$', '', str(self.openFileLineEdit.text()))
-                    self.svgbuild.setSingleOption("folder",  "%s/%s" % (workingDirectory, self.folderNameLineEdit.text()))
+                    self.svgbuild.setSingleOption("folder",  "%s%s" % (workingDirectory, str(self.folderNameLineEdit.text())))
                     
                     self.svgbuild.setSingleOption('path',  self.simplePathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('fullpath',  self.fullPathCheckBox.checkState() == Qt.Checked)
+                    self.svgbuild.setSingleOption('fillpath',  self.fillPathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('text',  self.textCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('image',  self.imageCheckBox.checkState() == Qt.Checked)
                     
@@ -123,7 +132,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.svgbuild.setSingleOption('height', self.heightSpinBox.value())
                     self.svgbuild.setSingleOption('width', self.widthSpinBox.value())
                     
-                    self.svgbuild.setSingleOption('marker', self.markerComboBox.itemData(self.markerComboBox.currentIndex()).toString())
+                    #self.svgbuild.setSingleOption('marker', self.markerComboBox.itemData(self.markerComboBox.currentIndex()).toString())
+                    self.svgbuild.setSingleOption('marker', str(self.markerComboBox.currentText().toLower()))
                     
                     #self.svgBuild.setSingleOption(key,  value)
                     
@@ -195,3 +205,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def resetThread(self):
         self.svgbuild.moveToThread(QApplication.instance().thread())
+        
