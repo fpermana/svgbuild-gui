@@ -149,6 +149,7 @@ class SVGBuild(QtCore.QObject):
             
             if self.camera.survey(self.svg):
                 #self.printText.emit('ok')
+                self.camera.move(self.svg.root.attrib['id'])
                 self.build(self.svg, self.camera, self.svg.root, self.options)
                 
                 if self.isRunning:
@@ -404,7 +405,7 @@ class SVGBuild(QtCore.QObject):
         
 #        hairline = ';'.join(hl)
         hairline = ';'.join("%s:%s" % (key,val) for (key,val) in hl.iteritems())
-        print hairline
+        #~ print hairline
 
         entity.attrib['style'] = hairline
         # scan the control points

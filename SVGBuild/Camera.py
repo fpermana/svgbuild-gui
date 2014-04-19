@@ -11,6 +11,7 @@ import time
 import os
 import shutil
 import re
+from PIL import Image, ImageDraw, ImageColor
 
 class Camera(QtCore.QObject):
     printText = QtCore.pyqtSignal(QtCore.QString)
@@ -203,59 +204,10 @@ class Camera(QtCore.QObject):
             camera_image = None
 
             if self.options['page']:
-                if self.options['camera']:
-                    spill = (self.area[3]-self.area[1]) / 20.
-                    area = "%d:%d:%d:%d" % (self.area[0],
-                                            self.area[1],
-                                            self.area[2],
-                                            self.area[3] + spill)
-
-                    camera_file = str("%s/camera%05d.png" % (self.options['folder'], self.time))
-
-                    settings = ' '.join( [ '-z',
-                                       '--export-png=%s' % camera_file,
-                                       '--export-area=%s' % area,
-                                        ])
-                    command = ' '.join( [ str(Settings.inkscape), str(settings), str(self.temp) ] )
-                    results = Utils.qx(command)
-
-                    camera_image = PythonMagick.Image(camera_file)
-                    camera_size = [camera_image.size().width(), camera_image.size().width()]
-
-#                    settings = ' '.join( [ '-format %wx%h',
-#                                        ])
-#                    command = ' '.join( [ identify, settings, camera_file ] )
-#                    camera_size = qx(command)
-#                    camera_size = re.sub("[\r\n]*$","", camera_size).split('x')
-
-                    camera_image = PythonMagick.Image('%dx%d' % (camera_size[0], camera_size[1]), '%s' % str(self.options['background']))
-
-                    width = (float(camera_size[0]) + float(camera_size[1])) / float(camera_size[1])
-
-#                    settings = ' '.join( [ '-size %dx%d' % (int(camera_size[0]), int(camera_size[1])),
-#                                        'xc:%s' % options['Background']
-#                                        ])
-#                    command = ' '.join( [ convert, settings, camera_file ] )
-#                    results = qx(command)
-
-                    camera_image.borderColor('%s' % str(self.options['frame']))
-                    camera_image.border('%dx%d' % (width, width))
-                    camera_image.transparent('%s' % str(self.options['background']))
-
-                    camera_image.write(camera_file)
-
-#                    settings = ' '.join( [ '-bordercolor %s' % options['line'],
-#                                        '-border %d' % width,
-#                                        '-transparent %s' % options['Background']
-#                                        ])
-#                    command = ' '.join( [ convert, camera_file, settings, camera_file ] )
-#                    results = qx(command)
-
                 settings = ' '.join( [ '-z',
                                    '--export-png=%s' % output,
                                    '--export-area-page',
                                ] )
-
             else:
                 spill = (self.area[3]-self.area[1]) / 20.
                 area = "%d:%d:%d:%d" % (self.area[0],
@@ -271,45 +223,29 @@ class Camera(QtCore.QObject):
             command = ' '.join( [ str(Settings.inkscape), str(settings), str(self.temp) ] )
             results = Utils.qx(command)
             
-            if self.options['page']:
-                if self.options['camera']:
-                    spill = (self.area[3]-self.area[1]) / 20.
-                    axis = self.area[0] - spill
-                    if(float(axis) >= 0):
-                        axis = '+%f' % axis
-                    else:
-                        axis = '%f' % axis
+            output_image = Image.open(output)
 
-                    ordinat = float(svg.root.attrib['height']) - self.area[3] - spill
-                    if(float(ordinat) >= 0):
-                        ordinat = '+%f' % ordinat
-                    else:
-                        ordinat = '%f' % ordinat
+            if self.options['page'] and self.options['camera']:
+                spill = (self.area[3]-self.area[1]) / 20.
+                axis = int(self.area[0])
+                ordinat = int(int(svg.root.attrib['height']) - self.area[3])
 
-                    conversion = ' '.join( [ camera_file,
-                                             '-geometry %s%s' % (axis, ordinat),
-                                             '-composite',
-                                             '-background "%s"' % self.options['background'], 
-                                             '-flatten',
-                                             ] )
+                camera_height = abs(int(self.area[1]-self.area[3]))
+                camera_width = abs(int(self.area[0]-self.area[2]))
+                frame_width = (camera_width + camera_height) / camera_height
+                #~ print axis, ordinat, frame_width
+                frame_draw = ImageDraw.Draw(output_image)
+                frame_draw.line((axis, ordinat, axis+camera_width, ordinat), fill=ImageColor.getrgb(self.options['frame']), width=frame_width)
+                frame_draw.line((axis, ordinat, axis, ordinat+camera_height), fill=ImageColor.getrgb(self.options['frame']), width=frame_width)
+                frame_draw.line((axis, ordinat+camera_height, axis+camera_width, ordinat+camera_height), fill=ImageColor.getrgb(self.options['frame']), width=frame_width)
+                frame_draw.line((axis+camera_width, ordinat, axis+camera_width, ordinat+camera_height), fill=ImageColor.getrgb(self.options['frame']), width=frame_width)
+                #~ frame_draw.ellipse((axis-1, ordinat-1, axis+1, ordinat+1))
+                del frame_draw
+                #~ output_image.save(output, 'PNG', quality=100)
 
-#                    output_image = Image(output)
-#                    output_image.composite(camera_image, axis, ordinat)
-
-                else:
-                    conversion = ' '.join( [ '-background "%s"' % self.options['background'],
-                                                 '-flatten',
-                                                 ] )
-            else:
-                conversion = ' '.join( [ '-background "%s"' % self.options['background'],
-                                         '-flatten',
-                                         '-extent %dx%d+0+0!' % (self.options['width'],
-                                                                 self.options['height']),
-                                         ] )
-
-            command = ' '.join( [ str(Settings.convert), str(output), str(conversion), str(output),
-                                  '&' ] )
-            results = Utils.qx(command)
+            background = Image.new("RGB", output_image.size, ImageColor.getrgb(self.options['background']))
+            background.paste(output_image, mask=output_image.split()[3]) # 3 is the alpha channel
+            background.save(output, 'PNG', quality=100)
             
             self.printText.emit('  ' + marker + ' ' + output)
             #print '  ' + marker, output

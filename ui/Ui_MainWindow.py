@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/fpermana/repositories/SVGBuild/ui/MainWindow.ui'
 #
-# Created: Sat Apr 12 12:15:34 2014
+# Created: Sat Apr 19 16:14:48 2014
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -240,6 +240,8 @@ class Ui_MainWindow(object):
         self.buildPushButton.setObjectName(_fromUtf8("buildPushButton"))
         self.verticalLayout_3.addWidget(self.buildPushButton)
         self.outputTextEdit = QtGui.QTextEdit(self.centralWidget)
+        self.outputTextEdit.setReadOnly(True)
+        self.outputTextEdit.setTextInteractionFlags(QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.outputTextEdit.setObjectName(_fromUtf8("outputTextEdit"))
         self.verticalLayout_3.addWidget(self.outputTextEdit)
         MainWindow.setCentralWidget(self.centralWidget)
