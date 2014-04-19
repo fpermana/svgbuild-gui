@@ -23,8 +23,6 @@ class SettingsDialog(QDialog, Ui_Dialog):
         
         self.inkscapeLineEdit.setText(Settings.inkscape)
         self.temporaryDirectoryLineEdit.setText(Settings.temporary)
-        self.convertLineEdit.setText(Settings.convert)
-        self.identifyLineEdit.setText(Settings.identify)
     
     @pyqtSignature("")
     def on_buttonBox_accepted(self):

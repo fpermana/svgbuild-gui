@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>231</height>
+    <height>165</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,16 @@
       <string>Settings</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <item row="1" column="0">
+       <widget class="QLabel" name="inkscapeLabel">
+        <property name="text">
+         <string>Inkscape</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="inkscapeLineEdit"/>
       </item>
@@ -32,33 +42,6 @@
       </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="temporaryDirectoryLineEdit"/>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="convertLineEdit"/>
-      </item>
-      <item row="6" column="1">
-       <widget class="QLineEdit" name="identifyLineEdit"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="inkscapeLabel">
-        <property name="text">
-         <string>Inkscape</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="convertLabel">
-        <property name="text">
-         <string>Convert</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="identifyLabel">
-        <property name="text">
-         <string>Identify</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>

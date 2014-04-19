@@ -280,12 +280,6 @@ class SVGBuild(QtCore.QObject):
         
         href = '{http://www.w3.org/1999/xlink}href'
         if not href in entity.attrib: return
-        '''if not os.path.exists(Settings.identify):
-            print 'ImageMagick "identify" tool not found; skipping.'
-            return'''
-        if not os.path.exists(Settings.convert):
-            print 'ImageMagick "convert" tool not found; skipping.'
-            return
         img_url = urlparse.urlparse(entity.attrib[href])
         img = img_url.path
         if not os.path.exists(img):
