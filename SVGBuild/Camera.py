@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import PythonMagick
+#import PythonMagick
 from PyQt4 import QtCore
 from lxml import etree
 from Settings import Settings

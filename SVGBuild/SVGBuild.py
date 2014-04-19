@@ -7,6 +7,7 @@ import shutil
 import time
 import sys
 import re
+import urlparse
 
 import interpolations
 import vectors
@@ -17,6 +18,7 @@ from SVG import SVG
 from Camera import Camera
 from Settings import Settings
 from lxml import etree
+from PIL import Image, ImageDraw, ImageColor
 
 class SVGBuild(QtCore.QObject):    
     finished = QtCore.pyqtSignal()
@@ -278,37 +280,39 @@ class SVGBuild(QtCore.QObject):
         
         href = '{http://www.w3.org/1999/xlink}href'
         if not href in entity.attrib: return
-        if not os.path.exists(Settings.identify):
+        '''if not os.path.exists(Settings.identify):
             print 'ImageMagick "identify" tool not found; skipping.'
-            return
+            return'''
         if not os.path.exists(Settings.convert):
             print 'ImageMagick "convert" tool not found; skipping.'
             return
-        img = entity.attrib[href]
+        img_url = urlparse.urlparse(entity.attrib[href])
+        img = img_url.path
         if not os.path.exists(img):
             print 'Image file not found locally:', img
             return
         # figure out original image's pixel size
-        results = Utils.qx('%s %s' % (str(Settings.identify), img))
+        '''results = Utils.qx('%s %s' % (str(Settings.identify), img))
         m = re.search(r'(\d+)x(\d+)', results)
         if not m:
             print 'ImageMagick could not identify size of image; skipping.'
-            return
-        size = [ int(m.group(1)), int(m.group(2)) ]
+            return'''
+        try:
+            output_image = Image.open(img)
+        except IOError, e:
+            print "error opening file :: %s" % img
+        size = output_image.size
         # for a handful of frames, replace image with a truncated temporary image
         tmp = self.options['folder'] + '/temp.png'
         frames = int(self.options['dally']) * 4
         for frame in range(frames):
             height = interpolations.linear(0, frames, frame, 1, size[1])
-            command = ' '.join( [ str(Settings.convert),
-                                  '-type TrueColorMatte',
-                                  '-channel alpha',
-                                  img,
-                                  '-background "#00000000"',
-                                  '-crop %dx%d+0+0' % (size[0], height),
-                                  '-extent %dx%d' % (size[0], size[1]),
-                                  tmp ] )
-            results = Utils.qx(command)
+            box = (0, 0, size[0], height)
+            area = output_image.crop(box)
+            background = Image.new("RGBA", size)
+            background.paste(area,box)
+            background.save(tmp, 'PNG')
+            
             if os.path.exists(tmp):
                 entity.attrib[href] = tmp
                 camera.shoot(svg)
