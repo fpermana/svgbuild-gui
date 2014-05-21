@@ -336,7 +336,8 @@ class SVGBuild(QtCore.QObject):
         style_list = style.split(';')
         for s in style_list:
             w = s.split(':')
-            style_dict[w[0]] = w[1]
+            if len(w) > 1:
+                style_dict[w[0]] = w[1]
         
 #        print ';'.join("%s:%r" % (key,val) for (key,val) in style_dict.iteritems())
         
