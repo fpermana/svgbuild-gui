@@ -206,7 +206,7 @@ class Camera(QtCore.QObject):
 
             if self.options['page']:
                 settings = ' '.join( [ '-z',
-                                   '--export-png=%s' % output,
+                                   '--export-png="%s"' % output,
                                    '--export-area-page',
                                ] )
             else:
