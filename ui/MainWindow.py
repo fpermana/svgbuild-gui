@@ -4,6 +4,7 @@
 Module implementing MainWindow.
 """
 import re
+from os.path import expanduser
 
 from PyQt4.QtGui import QMainWindow, QFileDialog, QColorDialog, QDialog, QApplication
 from PyQt4.QtCore import pyqtSignature, QDir, QString, QRegExp, Qt, QThread
@@ -92,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
     def selectFile(self):
         #selectedFileName = QtGui.QFileDialog.getOpenFileName(self,"Open file",QtCore.QDir.currentPath(), "SVG files (*.svg);;All files (*.*)", QtCore.QString("SVG files (*.svg)"));
-        selectedFileName = QFileDialog.getOpenFileName(self,"Open file",QDir.currentPath(), "SVG files (*.svg)", QString("SVG files (*.svg)"));
+        selectedFileName = QFileDialog.getOpenFileName(self, "Open file", expanduser("~"), "SVG files (*.svg)", QString("SVG files (*.svg)"));
         if selectedFileName:
             foldername = QString(selectedFileName)
             foldername.remove(QRegExp("^.*/")).remove(QRegExp("\.[^\.]*$"))

@@ -60,11 +60,12 @@ class Camera(QtCore.QObject):
                                ] )
                                
         
-        command = ' '.join( [ str(Settings.inkscape), str(settings), str(self.temp) ] )
+        command = ' '.join( [ str(Settings.inkscape), str(settings), '"%s"' % self.temp ] )
         #command = ' '.join( [ self.settings.inkscape, settings, self.temp ] )
         #command = QString('%1 %2 %3').arg(Settings.inkscape,).arg(settings).arg(self.temp)
-        #print command
+        #~ print command
         result = Utils.qx(command)
+        #~ print result
         result = result.split('\n')
         layout = self.layout
         
@@ -192,9 +193,9 @@ class Camera(QtCore.QObject):
         if self.options['from'] <= self.time <= self.options['until']:
             time.sleep(0.250)
             self._write(svg)
-            output = str("%s/%s%05d.png" % (self.options['folder'],
+            output = '%s/%s%05d.png' % (self.options['folder'],
                                         self.options['name'],
-                                        self.time))
+                                        self.time)
 
             settings = ''
             conversion = ''
@@ -215,12 +216,13 @@ class Camera(QtCore.QObject):
                                         self.area[2],
                                         self.area[3] + spill)
                 settings = ' '.join( [ '-z',
-                                       '--export-png=%s' % output,
+                                       '--export-png="%s"' % output,
                                        '--export-area=%s' % area,
                                        '--export-width=%d' % self.options['width'],
                                    ] )
 
-            command = ' '.join( [ str(Settings.inkscape), str(settings), str(self.temp) ] )
+            command = ' '.join( [ str(Settings.inkscape), str(settings), '"%s"' % self.temp ] )
+            #~ print command
             results = Utils.qx(command)
             
             output_image = Image.open(output)
@@ -244,7 +246,8 @@ class Camera(QtCore.QObject):
                 #~ output_image.save(output, 'PNG', quality=100)
 
             background = Image.new("RGB", output_image.size, ImageColor.getrgb(self.options['background']))
-            background.paste(output_image, mask=output_image.split()[3]) # 3 is the alpha channel
+            #~ background.paste(output_image, mask=output_image.split()[3]) # 3 is the alpha channel
+            background.paste(output_image,(0,0),output_image)
             background.save(output, 'PNG', quality=100)
             
             self.printText.emit('  ' + marker + ' ' + output)

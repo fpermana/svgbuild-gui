@@ -416,6 +416,9 @@ class SVGBuild(QtCore.QObject):
             if not self.options['fullpath']:
                 while points and not re.match(r'^[a-zA-Z]$', points[0]):
                     built.append( points.pop(0) )
+            else:
+                if self.options['roundpath']:
+                    built.insert( 0, points.pop() )
             
             # add the point to our path
             entity.attrib['d'] = ' '.join(built)
