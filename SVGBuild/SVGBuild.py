@@ -128,6 +128,11 @@ class SVGBuild(QtCore.QObject):
             try:
                 self.svg = SVG()
                 elementCount = self.svg.read(str(self.filename))
+
+                if self.options['page']:
+                    self.options['width'] = self.svg.root.attrib['width']
+                    self.options['height'] = self.svg.root.attrib['height']
+
             except Exception as e:
                 print 'error'
                 self.finished.emit()
