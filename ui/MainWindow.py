@@ -29,6 +29,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         
 #        self.checkBox.setVisible(False)
+#        self.circlePathCheckBox.setVisible(False)
+        self.buildPathGroupBox.setEnabled(False)
         
         self.svgbuild = SVGBuild()
         self.lineColorName = self.svgbuild.getSingleOption('line')
@@ -116,11 +118,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     workingDirectory = re.sub(r'[^\/]*$', '', str(self.openFileLineEdit.text()))
                     self.svgbuild.setSingleOption("folder",  "%s%s" % (workingDirectory, str(self.folderNameLineEdit.text())))
                     
-                    self.svgbuild.setSingleOption('path',  self.simplePathCheckBox.checkState() == Qt.Checked)
+                    self.svgbuild.setSingleOption('path',  self.buildPathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('fullpath',  self.fullPathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('fillpath',  self.fillPathCheckBox.checkState() == Qt.Checked)
-                    self.svgbuild.setSingleOption('text',  self.textCheckBox.checkState() == Qt.Checked)
-                    self.svgbuild.setSingleOption('image',  self.imageCheckBox.checkState() == Qt.Checked)
+                    self.svgbuild.setSingleOption('circlepath',  self.circlePathCheckBox.checkState() == Qt.Checked)
+                    self.svgbuild.setSingleOption('text',  self.buildTextCheckBox.checkState() == Qt.Checked)
+                    self.svgbuild.setSingleOption('image',  self.buildImageCheckBox.checkState() == Qt.Checked)
                     
                     self.svgbuild.setSingleOption('page', self.pageCheckBox.checkState() == Qt.Checked)
 #                    self.svgbuild.setSingleOption('combine', self.combineCheckBox.checkState() == Qt.Checked)
@@ -135,6 +138,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     
                     #self.svgbuild.setSingleOption('marker', self.markerComboBox.itemData(self.markerComboBox.currentIndex()).toString())
                     self.svgbuild.setSingleOption('marker', str(self.markerComboBox.currentText().toLower()))
+                    self.svgbuild.setSingleOption('objectline', self.objectLineCheckBox.checkState() == Qt.Checked)
+                    self.svgbuild.setSingleOption('nobackground', self.transparentCheckBox.checkState() == Qt.Checked)
                     
                     #self.svgBuild.setSingleOption(key,  value)
                     

@@ -17,6 +17,7 @@ from PyQt4 import QtCore
 from SVG import SVG
 from Camera import Camera
 from Settings import Settings
+from Node import Node
 from lxml import etree
 from PIL import Image, ImageDraw, ImageColor
 
@@ -109,11 +110,11 @@ class SVGBuild(QtCore.QObject):
                print 'SVG files were not found.'
         else:
             fileBaseName = os.path.splitext(os.path.basename(self.filename))
-            
+#            print fileBaseName
             if folder_name[0] == 'movie':
                 self.options['folder'] = fileBaseName[0]
-            if folder_name[1] == 'movie':
-                self.options['name'] = fileBaseName[0]
+            self.options['name'] = fileBaseName[0]
+            
             if self.options['page']:
                 self.options['folder'] += '_page'
             if self.options['backward']:
@@ -319,6 +320,51 @@ class SVGBuild(QtCore.QObject):
         # replace the original image reference
         entity.attrib[href] = img
         camera.shoot(svg)
+        
+    def getStartingPoint(self,  nodes):
+        node = None
+        i = -1
+        while i > (0-len(nodes)):
+            node = nodes[i]
+            characterCount = Node.getCharacterCount(node.command)
+            if characterCount > 1:
+                print i,  node.getValue()
+            elif characterCount == 1:
+                pass
+            i -= 1
+        
+    def simplifyNodes(self, nodes):
+        i = 0
+        point = []
+        nodeCount = len(nodes)
+        node = None
+        while i < nodeCount:
+            node = nodes[i]
+            node.showCommand = True
+            characterCount = Node.getCharacterCount(node.command)
+            if characterCount > 1:
+                point = node.attrib[-2:]
+            elif characterCount == 1:
+                if node.command == "v":
+                    point[0] = "0"
+                    point[1] = node.attrib[0]
+                elif node.command == "V":
+                    point[1] = node.attrib[0]
+                elif node.command == "h":
+                    point[0] = node.attrib[0]
+                    point[1] = "0"
+                elif node.command == "H":
+                    point[0] = node.attrib[0]
+                    
+                if node.command == "v" or node.command == "h":
+                    node.command = "l"
+                elif node.command == "V" or node.command == "H":
+                    node.command = "L"
+                    
+                node.showCommand = True
+                node.attrib = [ point[0],  point[1] ]
+                
+            i += 1
 
     def build_path(self, svg, camera, entity, options):
         '''Special progressive drawing of a path element.
@@ -367,11 +413,12 @@ class SVGBuild(QtCore.QObject):
               'stroke-width': '%f' % width
               }
               
-        if self.options['line'] == 'default':
+        if self.options['objectline']:
             if 'line' in style_dict:
                 hl['stroke'] = style_dict['line']
             else:
-                hl['stroke'] = '#000000'
+#                hl['stroke'] = '#000000'
+                hl['stroke'] = self.options['line']
         else:
             hl['stroke'] = self.options['line']
 
@@ -414,25 +461,137 @@ class SVGBuild(QtCore.QObject):
         entity.attrib['style'] = hairline
         # scan the control points
         points = entity.attrib['d'].split(' ')
+        
+        d = entity.attrib['d'].strip()
+        d = d.replace('z',  'Z').replace(',',  ' ')
+        d = re.sub(r'([a-zA-Z])([0-9])', r'\1 ', d)
+        
+        paths = re.findall('[^Z]+Z', d)
+        if len(paths) == 0:
+            paths = d.split('Z')
+        
         built = [ ]
+        tempBuilt = [ ]
+        
         # each control point is a letter, followed by some floating-point pairs
-        while points:
-            if not self.isRunning: return
-            built.append( points.pop(0) )
-            if not self.options['fullpath']:
-                while points and not re.match(r'^[a-zA-Z]$', points[0]):
-                    built.append( points.pop(0) )
-            else:
-                if self.options['roundpath']:
-                    built.insert( 0, points.pop() )
+        for path in paths:
+            if len(path) == 0:
+                continue
+                
+            nodes = []
+            command = ""
+            point = ""
+            characterCount = 0
+            showCommand = False
             
-            # add the point to our path
-            entity.attrib['d'] = ' '.join(built)
-            camera.shoot(svg)
+            points = path.strip().split(' ')
+            pointsCount = len(points)
+#            print points
+
+            node = None
+            while points:
+                if not self.isRunning: return
+                
+                point = points[0]
+                
+                node = Node()
+                attrib = []
+                if re.match(r'^[a-zA-Z]$', point):
+                    command = point
+                    showCommand = True
+                    characterCount = Node.getCharacterCount(command)
+                    points.pop(0)
+                else:
+                    showCommand = False
+            
+                for j in range(0, characterCount):
+                    if len(points) > 0:
+                        attrib.append(points.pop(0))
+
+                node.command = command
+                node.attrib = attrib
+                node.showCommand = showCommand
+                
+                nodes.append(node)
+            
+            self.simplifyNodes(nodes)
+            leftPath = []
+            rightPath = []
+            
+            closedPath = False
+            node = nodes[-1]
+            lastNode = None
+            if node.command == "Z":
+                closedPath = True
+                firstNode = nodes[0]
+                lastNode = nodes[-2]
+#                print firstNode.getTarget(),  lastNode.getTarget(),  firstNode.getTarget() != lastNode.getTarget()
+                
+                if firstNode.getTarget() != lastNode.getTarget():
+                    n = Node()
+                    n.attrib = firstNode.getTarget()
+                    n.showCommand = True
+                    if firstNode.command.islower():
+                        n.command = "l"
+                    else:
+                        n.command = "L"
+                        
+                    nodes.insert(-1,  n)
+                lastNode = nodes.pop()
+            
+            if self.options['circlepath']:
+                tempBuilt = built[:]
+                
+            while nodes:
+                if not self.isRunning: return
+                
+                if not self.options['fullpath']:
+                    node = nodes.pop(0)
+                    built.append(node.getValue())
+#                        built.append( points.pop(0) )
+                    while nodes and not re.match(r'^[a-zA-Z]$', nodes[0].showCommand):
+                        node = nodes.pop(0)
+                        built.append(node.getValue())
+                else:
+                    if self.options['circlepath'] and closedPath:
+                        if len(nodes) > 0:
+                            node = nodes.pop(0)
+                            leftPath.append(node)
+                        if len(nodes) > 0:
+                            node = nodes.pop()
+                            rightPath.insert(0, node)
+                        
+                        cleanPath = []
+                        for node in nodes:
+                            n = Node()
+                            if node.command.islower():
+                                n.command = "m"
+                            else:
+                                n.command = "M"
+                            
+                            n.showCommand = True
+                            n.attrib = node.attrib[-2:]
+                            cleanPath.append(n)
+                            
+                        buildNodes = leftPath + cleanPath + rightPath
+                        built = []
+                        for node in buildNodes:
+                            built.append(node.getValue())
+                        built = tempBuilt + built
+                    else:
+                        node = nodes.pop(0)
+                        built.append(node.getValue())
+                        
+                entity.attrib['d'] = ' '.join(built)
+                camera.shoot(svg)
+            
+            if closedPath:
+                built.append(lastNode.getValue())
+                entity.attrib['d'] = ' '.join(built)
+                camera.shoot(svg)
+                
         # put the original style back
         entity.attrib['style'] = style
-        camera.shoot(svg)
-
         camera.shoot(svg)
 
     def build_text(self, svg, camera, entity, options):

@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1000</width>
     <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>SVG Build</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icon64.png</normaloff>:/icon64.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -28,35 +32,21 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QCheckBox" name="simplePathCheckBox">
+           <widget class="QCheckBox" name="buildPathCheckBox">
             <property name="text">
-             <string>Simple Path</string>
+             <string>Path</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="fullPathCheckBox">
-            <property name="text">
-             <string>Full Path</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="fillPathCheckBox">
-            <property name="text">
-             <string>Fill Path</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="textCheckBox">
+           <widget class="QCheckBox" name="buildTextCheckBox">
             <property name="text">
              <string>Text</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="imageCheckBox">
+           <widget class="QCheckBox" name="buildImageCheckBox">
             <property name="text">
              <string>Image</string>
             </property>
@@ -123,7 +113,7 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="0" column="2">
         <widget class="QGroupBox" name="behaviourGroupBox">
          <property name="title">
           <string>Behaviour</string>
@@ -160,7 +150,7 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="2">
+       <item row="0" column="3">
         <widget class="QGroupBox" name="colorGroupBox">
          <property name="title">
           <string>Color</string>
@@ -314,10 +304,24 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="3">
+           <widget class="QCheckBox" name="transparentCheckBox">
+            <property name="text">
+             <string>transparent</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QCheckBox" name="objectLineCheckBox">
+            <property name="text">
+             <string>Object's Line</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="1" column="2">
         <widget class="QGroupBox" name="canvasGroupBox">
          <property name="title">
           <string>Canvas</string>
@@ -378,7 +382,7 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="2">
+       <item row="1" column="3">
         <widget class="QGroupBox" name="othersGroupBox">
          <property name="title">
           <string>Others</string>
@@ -421,6 +425,42 @@
            <widget class="QLineEdit" name="folderNameLineEdit">
             <property name="text">
              <string>movie</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="buildPathGroupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Build Path</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QCheckBox" name="fullPathCheckBox">
+            <property name="text">
+             <string>Full Path</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="fillPathCheckBox">
+            <property name="text">
+             <string>Fill Path</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="circlePathCheckBox">
+            <property name="text">
+             <string>Circle Path</string>
             </property>
            </widget>
           </item>
@@ -477,7 +517,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1000</width>
      <height>25</height>
     </rect>
    </property>
@@ -523,7 +563,56 @@
  <resources>
   <include location="resource.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buildPathCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>buildPathGroupBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>262</x>
+     <y>70</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>objectLineCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineToolButton</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>905</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>844</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>transparentCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>backgroundToolButton</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>889</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>842</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <slot>appendLine(QString)</slot>
   <slot>selectFile()</slot>

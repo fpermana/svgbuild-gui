@@ -245,10 +245,11 @@ class Camera(QtCore.QObject):
                 del frame_draw
                 #~ output_image.save(output, 'PNG', quality=100)
 
-            background = Image.new("RGB", output_image.size, ImageColor.getrgb(self.options['background']))
-            #~ background.paste(output_image, mask=output_image.split()[3]) # 3 is the alpha channel
-            background.paste(output_image,(0,0),output_image)
-            background.save(output, 'PNG', quality=100)
+            if not self.options['nobackground']:
+                background = Image.new("RGB", output_image.size, ImageColor.getrgb(self.options['background']))
+                #~ background.paste(output_image, mask=output_image.split()[3]) # 3 is the alpha channel
+                background.paste(output_image,(0,0),output_image)
+                background.save(output, 'PNG', quality=100)
             
             self.printText.emit('  ' + marker + ' ' + output)
             #print '  ' + marker, output

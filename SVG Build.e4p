@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project SVG Build -->
-<!-- Saved: 2014-01-29, 07:31:04 -->
+<!-- Saved: 2014-05-24, 22:49:19 -->
 <!-- Copyright (C) 2014 Fandy Permana, f.permana@gmail.com -->
 <Project version="4.6">
   <Language>en</Language>
@@ -26,6 +26,7 @@
     <Source>SVGBuild/SVG.py</Source>
     <Source>SVGBuild/Utils.py</Source>
     <Source>ui/Ui_SettingsDialog.py</Source>
+    <Source>SVGBuild/Node.py</Source>
   </Sources>
   <Forms>
     <Form>ui/MainWindow.ui</Form>
