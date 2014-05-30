@@ -523,7 +523,6 @@ class SVGBuild(QtCore.QObject):
             lastNode = None
             if node.command == "Z":
                 closedPath = True
-                pass
                 '''
                 firstNode = nodes[0]
                 lastNode = nodes[-2]
@@ -545,6 +544,7 @@ class SVGBuild(QtCore.QObject):
             if self.options['circlepath']:
                 tempBuilt = built[:]
                 
+            index = 0
             while nodes:
                 if not self.isRunning: return
                 
@@ -553,13 +553,22 @@ class SVGBuild(QtCore.QObject):
 #                    built.append(node.getValue())
 #                        built.append( points.pop(0) )
 #                    while nodes and not re.match(r'^[a-zA-Z]$', nodes[0].showCommand):
+                    command = nodes[0].command
                     while nodes:
                         node = nodes.pop(0)
 #                        print node.getValue()
                         built.append(node.getValue())
+                        
+                        if node.command.lower() != command.lower():
+                            break
+                        
                 else:
                     if self.options['circlepath'] and closedPath:
                         if len(nodes) > 0:
+                            if index == 0:
+                                node = nodes.pop(0)
+                                leftPath.append(node)
+                                index = 1
                             node = nodes.pop(0)
                             leftPath.append(node)
                         if len(nodes) > 0:
