@@ -472,9 +472,10 @@ class SVGBuild(QtCore.QObject):
         
         built = [ ]
         tempBuilt = [ ]
+        pathLastNode = None
         
         # each control point is a letter, followed by some floating-point pairs
-        for path in paths:
+        for pathIndex, path in enumerate(paths):
             if len(path) == 0:
                 continue
                 
@@ -486,7 +487,6 @@ class SVGBuild(QtCore.QObject):
             
             points = path.strip().split(' ')
             pointsCount = len(points)
-#            print points
 
             node = None
             while points:
@@ -502,6 +502,11 @@ class SVGBuild(QtCore.QObject):
                     characterCount = Node.getCharacterCount(command)
                     points.pop(0)
                 else:
+                    '''avoid sequential M or m command'''
+                    if command == "M":
+                        command = "L"
+                    elif command == "m":
+                        command = "l"
                     showCommand = False
             
                 for j in range(0, characterCount):
@@ -523,22 +528,24 @@ class SVGBuild(QtCore.QObject):
             lastNode = None
             if node.command == "Z":
                 closedPath = True
-                '''
-                firstNode = nodes[0]
-                lastNode = nodes[-2]
-#                print firstNode.getTarget(),  lastNode.getTarget(),  firstNode.getTarget() != lastNode.getTarget()
                 
-                if firstNode.getTarget() != lastNode.getTarget():
-                    print firstNode.getTarget(),  lastNode.getTarget(),  firstNode.getTarget() != lastNode.getTarget()
-                    n = Node()
-                    n.attrib = firstNode.getTarget()
-                    n.showCommand = True
-                    if firstNode.command.islower():
-                        n.command = "l"
-                    else:
-                        n.command = "L"
+                firstNode = nodes[0]
+                
+                n = Node()
+                
+                '''force first node of each path to absolute command'''
+                if pathIndex > 0 and firstNode.command.islower():
+                        firstNode.command = firstNode.command.upper()
+                        lastCoordinate = pathLastNode.getTarget()
+                        firstNode.attrib = [ str(float(lastCoordinate[0]) + float(firstNode.attrib[0])),  str(float(lastCoordinate[1]) + float(firstNode.attrib[1])) ]
                         
-                    nodes.insert(-1,  n)'''
+                
+                n.attrib = firstNode.getTarget()
+                n.showCommand = True
+                n.command = "L"
+                    
+                nodes.insert(-1,  n)
+                pathLastNode = n
                 lastNode = nodes.pop()
             
             if self.options['circlepath']:
@@ -565,10 +572,6 @@ class SVGBuild(QtCore.QObject):
                 else:
                     if self.options['circlepath'] and closedPath:
                         if len(nodes) > 0:
-                            if index == 0:
-                                node = nodes.pop(0)
-                                leftPath.append(node)
-                                index = 1
                             node = nodes.pop(0)
                             leftPath.append(node)
                         if len(nodes) > 0:
