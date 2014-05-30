@@ -523,11 +523,14 @@ class SVGBuild(QtCore.QObject):
             lastNode = None
             if node.command == "Z":
                 closedPath = True
+                pass
+                '''
                 firstNode = nodes[0]
                 lastNode = nodes[-2]
 #                print firstNode.getTarget(),  lastNode.getTarget(),  firstNode.getTarget() != lastNode.getTarget()
                 
                 if firstNode.getTarget() != lastNode.getTarget():
+                    print firstNode.getTarget(),  lastNode.getTarget(),  firstNode.getTarget() != lastNode.getTarget()
                     n = Node()
                     n.attrib = firstNode.getTarget()
                     n.showCommand = True
@@ -536,7 +539,7 @@ class SVGBuild(QtCore.QObject):
                     else:
                         n.command = "L"
                         
-                    nodes.insert(-1,  n)
+                    nodes.insert(-1,  n)'''
                 lastNode = nodes.pop()
             
             if self.options['circlepath']:
@@ -546,11 +549,13 @@ class SVGBuild(QtCore.QObject):
                 if not self.isRunning: return
                 
                 if not self.options['fullpath']:
-                    node = nodes.pop(0)
-                    built.append(node.getValue())
+#                    node = nodes.pop(0)
+#                    built.append(node.getValue())
 #                        built.append( points.pop(0) )
-                    while nodes and not re.match(r'^[a-zA-Z]$', nodes[0].showCommand):
+#                    while nodes and not re.match(r'^[a-zA-Z]$', nodes[0].showCommand):
+                    while nodes:
                         node = nodes.pop(0)
+#                        print node.getValue()
                         built.append(node.getValue())
                 else:
                     if self.options['circlepath'] and closedPath:
@@ -577,6 +582,7 @@ class SVGBuild(QtCore.QObject):
                         built = []
                         for node in buildNodes:
                             built.append(node.getValue())
+#                        print ' '.join(built)
                         built = tempBuilt + built
                     else:
                         node = nodes.pop(0)
@@ -585,10 +591,10 @@ class SVGBuild(QtCore.QObject):
                 entity.attrib['d'] = ' '.join(built)
                 camera.shoot(svg)
             
-            if closedPath:
+            '''if closedPath:
                 built.append(lastNode.getValue())
                 entity.attrib['d'] = ' '.join(built)
-                camera.shoot(svg)
+                camera.shoot(svg)'''
                 
         # put the original style back
         entity.attrib['style'] = style

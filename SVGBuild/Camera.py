@@ -11,6 +11,7 @@ import time
 import os
 import shutil
 import re
+import math
 from PIL import Image, ImageDraw, ImageColor
 
 class Camera(QtCore.QObject):
@@ -230,11 +231,11 @@ class Camera(QtCore.QObject):
             if self.options['page'] and self.options['camera']:
                 spill = (self.area[3]-self.area[1]) / 20.
                 axis = int(self.area[0])
-                ordinat = int(int(svg.root.attrib['height']) - self.area[3])
+                ordinat = int(float(svg.root.attrib['height']) - self.area[3])
 
                 camera_height = abs(int(self.area[1]-self.area[3]))
                 camera_width = abs(int(self.area[0]-self.area[2]))
-                frame_width = (camera_width + camera_height) / camera_height
+                frame_width = int(math.ceil((camera_width + camera_height) / (camera_height if camera_height > camera_width else camera_width)))
                 #~ print axis, ordinat, frame_width
                 frame_draw = ImageDraw.Draw(output_image)
                 frame_draw.line((axis, ordinat, axis+camera_width, ordinat), fill=ImageColor.getrgb(self.options['frame']), width=frame_width)
