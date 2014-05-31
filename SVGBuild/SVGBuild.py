@@ -321,29 +321,14 @@ class SVGBuild(QtCore.QObject):
         entity.attrib[href] = img
         camera.shoot(svg)
         
-    def getStartingPoint(self,  nodes):
-        node = None
-        i = -1
-        while i > (0-len(nodes)):
-            node = nodes[i]
-            characterCount = Node.getCharacterCount(node.command)
-            if characterCount > 1:
-                print i,  node.getValue()
-            elif characterCount == 1:
-                pass
-            i -= 1
-        
     def simplifyNodes(self, nodes):
-        i = 0
+        '''remove v, V, h, and H command'''
         point = []
-        nodeCount = len(nodes)
-        node = None
-        while i < nodeCount:
-            node = nodes[i]
+        for node in nodes:
             node.showCommand = True
             characterCount = Node.getCharacterCount(node.command)
             if characterCount > 1:
-                point = node.attrib[-2:]
+                point = node.getTarget()
             elif characterCount == 1:
                 if node.command == "v":
                     point[0] = "0"
@@ -361,10 +346,8 @@ class SVGBuild(QtCore.QObject):
                 elif node.command == "V" or node.command == "H":
                     node.command = "L"
                     
-                node.showCommand = True
+#                node.showCommand = True
                 node.attrib = [ point[0],  point[1] ]
-                
-            i += 1
 
     def build_path(self, svg, camera, entity, options):
         '''Special progressive drawing of a path element.
@@ -530,7 +513,6 @@ class SVGBuild(QtCore.QObject):
                 closedPath = True
                 
                 firstNode = nodes[0]
-                
                 n = Node()
                 
                 '''force first node of each path to absolute command'''
@@ -590,7 +572,28 @@ class SVGBuild(QtCore.QObject):
                             n.attrib = node.attrib[-2:]
                             cleanPath.append(n)
                             
+                        if self.options['fillpath']:
+                            currentPoint = ["0", "0"]
+                            absolutePath = False
+                            for node in cleanPath:
+                                if node.command.islower():
+                                    currentPoint[0] = str(float(currentPoint[0]) + float(node.attrib[0]))
+                                    currentPoint[1] = str(float(currentPoint[1]) + float(node.attrib[1]))
+                                else:
+                                    absolutePath = True
+                                    currentPoint[0] = node.attrib[0]
+                                    currentPoint[1] = node.attrib[1]
+                                    
+                            node = Node()
+                            node.showCommand = True
+                            node.command = "L" if absolutePath else "l"
+                            node.attrib = currentPoint
+                            
+                            cleanPath = []
+                            cleanPath.append(node)
+                            
                         buildNodes = leftPath + cleanPath + rightPath
+                        
                         built = []
                         for node in buildNodes:
                             built.append(node.getValue())
