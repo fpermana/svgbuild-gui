@@ -112,6 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print "no file selected"
             else:
                 if not self.svgbuild.isRunning:
+                    self.optionsGroupBox.setEnabled(False)
                     self.outputTextEdit.setText("")
                     self.svgbuild.setIsRunning(True)
                     self.svgbuild.setFilename(str(self.openFileLineEdit.text()))
@@ -162,6 +163,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.thread.start()
                 
         else:
+            self.optionsGroupBox.setEnabled(True)
             self.svgbuild.setIsRunning(False)
             self.buildPushButton.setText("Build!")
         # TODO: not implemented yet
@@ -207,6 +209,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.outputTextEdit.append(line)
         
     def finished(self):
+        self.optionsGroupBox.setEnabled(True)
         self.svgbuild.setIsRunning(False)
         self.buildPushButton.setText("Build!")
 
