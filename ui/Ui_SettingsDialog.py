@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/fpermana/repositories/SVGBuild/ui/SettingsDialog.ui'
 #
-# Created: Sat May 24 08:40:49 2014
+# Created: Wed Jun  4 20:17:58 2014
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!

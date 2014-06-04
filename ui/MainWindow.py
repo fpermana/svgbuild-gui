@@ -122,6 +122,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.svgbuild.setSingleOption('fullpath',  self.fullPathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('fillpath',  self.fillPathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('circlepath',  self.circlePathCheckBox.checkState() == Qt.Checked)
+                    self.svgbuild.setSingleOption('closepath',  self.circlePathCheckBox.checkState() == Qt.Checked and self.closePathCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('text',  self.buildTextCheckBox.checkState() == Qt.Checked)
                     self.svgbuild.setSingleOption('image',  self.buildImageCheckBox.checkState() == Qt.Checked)
                     

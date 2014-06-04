@@ -36,6 +36,7 @@ class SVGBuild(QtCore.QObject):
             'path': False,
             'fullpath': False,
             'fillpath': False,
+            'closepath': False,
             'top': False,
             'page': False,
             'combine': False,
@@ -520,7 +521,6 @@ class SVGBuild(QtCore.QObject):
                         firstNode.command = firstNode.command.upper()
                         lastCoordinate = pathLastNode.getTarget()
                         firstNode.attrib = [ str(float(lastCoordinate[0]) + float(firstNode.attrib[0])),  str(float(lastCoordinate[1]) + float(firstNode.attrib[1])) ]
-                        
                 
                 n.attrib = firstNode.getTarget()
                 n.showCommand = True
@@ -572,7 +572,7 @@ class SVGBuild(QtCore.QObject):
                             n.attrib = node.attrib[-2:]
                             cleanPath.append(n)
                             
-                        if self.options['fillpath']:
+                        if self.options['closepath']:
                             currentPoint = ["0", "0"]
                             absolutePath = False
                             for node in cleanPath:

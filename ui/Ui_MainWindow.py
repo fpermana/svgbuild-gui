@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/fpermana/repositories/SVGBuild/ui/MainWindow.ui'
 #
-# Created: Sat May 24 08:59:25 2014
+# Created: Wed Jun  4 20:17:57 2014
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -244,6 +244,10 @@ class Ui_MainWindow(object):
         self.circlePathCheckBox = QtGui.QCheckBox(self.buildPathGroupBox)
         self.circlePathCheckBox.setObjectName(_fromUtf8("circlePathCheckBox"))
         self.verticalLayout_4.addWidget(self.circlePathCheckBox)
+        self.closePathCheckBox = QtGui.QCheckBox(self.buildPathGroupBox)
+        self.closePathCheckBox.setEnabled(False)
+        self.closePathCheckBox.setObjectName(_fromUtf8("closePathCheckBox"))
+        self.verticalLayout_4.addWidget(self.closePathCheckBox)
         self.gridLayout_2.addWidget(self.buildPathGroupBox, 0, 1, 1, 1)
         self.verticalLayout_3.addWidget(self.optionsGroupBox)
         self.chooseFileGroupBox = QtGui.QGroupBox(self.centralWidget)
@@ -295,6 +299,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.buildPathCheckBox, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.buildPathGroupBox.setEnabled)
         QtCore.QObject.connect(self.objectLineCheckBox, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.lineToolButton.setDisabled)
         QtCore.QObject.connect(self.transparentCheckBox, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.backgroundToolButton.setDisabled)
+        QtCore.QObject.connect(self.circlePathCheckBox, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.closePathCheckBox.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -337,6 +342,7 @@ class Ui_MainWindow(object):
         self.fullPathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Full Path", None, QtGui.QApplication.UnicodeUTF8))
         self.fillPathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Fill Path", None, QtGui.QApplication.UnicodeUTF8))
         self.circlePathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Circle Path", None, QtGui.QApplication.UnicodeUTF8))
+        self.closePathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Close Path", None, QtGui.QApplication.UnicodeUTF8))
         self.chooseFileGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Choose File", None, QtGui.QApplication.UnicodeUTF8))
         self.openFilePushButton.setText(QtGui.QApplication.translate("MainWindow", "Open file", None, QtGui.QApplication.UnicodeUTF8))
         self.buildPushButton.setText(QtGui.QApplication.translate("MainWindow", "Build!", None, QtGui.QApplication.UnicodeUTF8))

@@ -464,6 +464,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="closePathCheckBox">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Close Path</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -609,6 +619,22 @@
     <hint type="destinationlabel">
      <x>842</x>
      <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>circlePathCheckBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>closePathCheckBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>307</x>
+     <y>159</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>180</y>
     </hint>
    </hints>
   </connection>
