@@ -6,7 +6,7 @@ For example on this link <br/>
 I modified that python script, create GUI and gave additional features and functions so it can be used to create videos like on <br/>
 [![With virtual camera visualization](http://img.youtube.com/vi/TUOR9AXcyF4/0.jpg)](http://www.youtube.com/watch?v=TUOR9AXcyF4) <br/>
 [![Parametric function](http://img.youtube.com/vi/x_h5q_YA-cs/0.jpg)](http://www.youtube.com/watch?v=x_h5q_YA-cs) <br/>
-[![Noodle](http://img.youtube.com/vi/FOZ5y4NYMjs/0.jpg)](http://www.youtube.com/watch?v=fOZ5y4NYMjs).<br/>
+[![Noodle](http://img.youtube.com/vi/FOZ5y4NYMjs/0.jpg)](http://www.youtube.com/watch?v=FOZ5y4NYMjs).<br/>
 [![Auto trace](http://img.youtube.com/vi/whgeRYBKRCE/0.jpg)](http://www.youtube.com/watch?v=whgeRYBKRCE) <br/>
 <br/>
 <br/>
