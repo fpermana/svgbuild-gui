@@ -7,11 +7,12 @@ import re
 from os.path import expanduser
 
 from PyQt4.QtGui import QMainWindow, QFileDialog, QColorDialog, QDialog, QApplication
-from PyQt4.QtCore import pyqtSignature, QDir, QString, QRegExp, Qt, QThread
+from PyQt4.QtCore import pyqtSignature, QString, QRegExp, Qt, QThread
 
 from Ui_MainWindow import Ui_MainWindow
 
 from SettingsDialog import SettingsDialog
+from AboutDialog import AboutDialog
 
 from SVGBuild.SVGBuild import SVGBuild
 
@@ -202,8 +203,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Slot documentation goes here.
         """
+        aboutDialog = AboutDialog(self)
+        if aboutDialog.exec_() == QDialog.Accepted:
+            print 'ok'
         # TODO: not implemented yet
-        raise NotImplementedError
+#        raise NotImplementedError
 
     def appendText(self, line):
         self.outputTextEdit.append(line)

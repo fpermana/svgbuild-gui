@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/fpermana/repositories/SVGBuild/ui/MainWindow.ui'
+# Form implementation generated from reading ui file 'C:\Users\Setiawan Paiman\eric\svgbuild-gui\ui\MainWindow.ui'
 #
-# Created: Wed Jun  4 20:17:57 2014
-#      by: PyQt4 UI code generator 4.9.1
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +11,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -303,55 +311,55 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "SVG Build", None, QtGui.QApplication.UnicodeUTF8))
-        self.optionsGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Options", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Build", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildPathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildTextCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Text", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildImageCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Image", None, QtGui.QApplication.UnicodeUTF8))
-        self.rangeGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Range", None, QtGui.QApplication.UnicodeUTF8))
-        self.fromLabel.setText(QtGui.QApplication.translate("MainWindow", "From", None, QtGui.QApplication.UnicodeUTF8))
-        self.untilLabel.setText(QtGui.QApplication.translate("MainWindow", "Until", None, QtGui.QApplication.UnicodeUTF8))
-        self.behaviourGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Behaviour", None, QtGui.QApplication.UnicodeUTF8))
-        self.pageCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Page", None, QtGui.QApplication.UnicodeUTF8))
-        self.cameraCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Camera", None, QtGui.QApplication.UnicodeUTF8))
-        self.backwardCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Backward", None, QtGui.QApplication.UnicodeUTF8))
-        self.topCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Top", None, QtGui.QApplication.UnicodeUTF8))
-        self.colorGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Color", None, QtGui.QApplication.UnicodeUTF8))
-        self.lineLabel.setText(QtGui.QApplication.translate("MainWindow", "Line", None, QtGui.QApplication.UnicodeUTF8))
-        self.lineToolButton.setText(QtGui.QApplication.translate("MainWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.backgroundLabel.setText(QtGui.QApplication.translate("MainWindow", "Background", None, QtGui.QApplication.UnicodeUTF8))
-        self.cameraFrameLabel.setText(QtGui.QApplication.translate("MainWindow", "Camera Frame", None, QtGui.QApplication.UnicodeUTF8))
-        self.backgroundToolButton.setText(QtGui.QApplication.translate("MainWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.cameraFrameToolButton.setText(QtGui.QApplication.translate("MainWindow", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerLabel.setText(QtGui.QApplication.translate("MainWindow", "Marker", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerComboBox.setItemText(0, QtGui.QApplication.translate("MainWindow", "None", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerComboBox.setItemText(1, QtGui.QApplication.translate("MainWindow", "Diamond", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerComboBox.setItemText(2, QtGui.QApplication.translate("MainWindow", "Scissor", None, QtGui.QApplication.UnicodeUTF8))
-        self.markerComboBox.setItemText(3, QtGui.QApplication.translate("MainWindow", "Triangle", None, QtGui.QApplication.UnicodeUTF8))
-        self.transparentCheckBox.setText(QtGui.QApplication.translate("MainWindow", "transparent", None, QtGui.QApplication.UnicodeUTF8))
-        self.objectLineCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Object\'s Line", None, QtGui.QApplication.UnicodeUTF8))
-        self.canvasGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Canvas", None, QtGui.QApplication.UnicodeUTF8))
-        self.heightLabel.setText(QtGui.QApplication.translate("MainWindow", "Height", None, QtGui.QApplication.UnicodeUTF8))
-        self.widthLabel.setText(QtGui.QApplication.translate("MainWindow", "Width", None, QtGui.QApplication.UnicodeUTF8))
-        self.othersGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Others", None, QtGui.QApplication.UnicodeUTF8))
-        self.zoomLabel.setText(QtGui.QApplication.translate("MainWindow", "Zoom", None, QtGui.QApplication.UnicodeUTF8))
-        self.folderNameLabel.setText(QtGui.QApplication.translate("MainWindow", "Folder Name", None, QtGui.QApplication.UnicodeUTF8))
-        self.folderNameLineEdit.setText(QtGui.QApplication.translate("MainWindow", "movie", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildPathGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Build Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.fullPathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Full Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.fillPathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Fill Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.circlePathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Circle Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.closePathCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Close Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.chooseFileGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Choose File", None, QtGui.QApplication.UnicodeUTF8))
-        self.openFilePushButton.setText(QtGui.QApplication.translate("MainWindow", "Open file", None, QtGui.QApplication.UnicodeUTF8))
-        self.buildPushButton.setText(QtGui.QApplication.translate("MainWindow", "Build!", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuMenu.setTitle(QtGui.QApplication.translate("MainWindow", "&Menu", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSetting.setText(QtGui.QApplication.translate("MainWindow", "&Setting", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "E&xit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSVGBuild_Help.setText(QtGui.QApplication.translate("MainWindow", "SVGBuild &Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "&About", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SVG Build", None))
+        self.optionsGroupBox.setTitle(_translate("MainWindow", "Options", None))
+        self.buildGroupBox.setTitle(_translate("MainWindow", "Build", None))
+        self.buildPathCheckBox.setText(_translate("MainWindow", "Path", None))
+        self.buildTextCheckBox.setText(_translate("MainWindow", "Text", None))
+        self.buildImageCheckBox.setText(_translate("MainWindow", "Image", None))
+        self.rangeGroupBox.setTitle(_translate("MainWindow", "Range", None))
+        self.fromLabel.setText(_translate("MainWindow", "From", None))
+        self.untilLabel.setText(_translate("MainWindow", "Until", None))
+        self.behaviourGroupBox.setTitle(_translate("MainWindow", "Behaviour", None))
+        self.pageCheckBox.setText(_translate("MainWindow", "Page", None))
+        self.cameraCheckBox.setText(_translate("MainWindow", "Camera", None))
+        self.backwardCheckBox.setText(_translate("MainWindow", "Backward", None))
+        self.topCheckBox.setText(_translate("MainWindow", "Top", None))
+        self.colorGroupBox.setTitle(_translate("MainWindow", "Color", None))
+        self.lineLabel.setText(_translate("MainWindow", "Line", None))
+        self.lineToolButton.setText(_translate("MainWindow", "...", None))
+        self.backgroundLabel.setText(_translate("MainWindow", "Background", None))
+        self.cameraFrameLabel.setText(_translate("MainWindow", "Camera Frame", None))
+        self.backgroundToolButton.setText(_translate("MainWindow", "...", None))
+        self.cameraFrameToolButton.setText(_translate("MainWindow", "...", None))
+        self.markerLabel.setText(_translate("MainWindow", "Marker", None))
+        self.markerComboBox.setItemText(0, _translate("MainWindow", "None", None))
+        self.markerComboBox.setItemText(1, _translate("MainWindow", "Diamond", None))
+        self.markerComboBox.setItemText(2, _translate("MainWindow", "Scissor", None))
+        self.markerComboBox.setItemText(3, _translate("MainWindow", "Triangle", None))
+        self.transparentCheckBox.setText(_translate("MainWindow", "transparent", None))
+        self.objectLineCheckBox.setText(_translate("MainWindow", "Object\'s Line", None))
+        self.canvasGroupBox.setTitle(_translate("MainWindow", "Canvas", None))
+        self.heightLabel.setText(_translate("MainWindow", "Height", None))
+        self.widthLabel.setText(_translate("MainWindow", "Width", None))
+        self.othersGroupBox.setTitle(_translate("MainWindow", "Others", None))
+        self.zoomLabel.setText(_translate("MainWindow", "Zoom", None))
+        self.folderNameLabel.setText(_translate("MainWindow", "Folder Name", None))
+        self.folderNameLineEdit.setText(_translate("MainWindow", "movie", None))
+        self.buildPathGroupBox.setTitle(_translate("MainWindow", "Build Path", None))
+        self.fullPathCheckBox.setText(_translate("MainWindow", "Full Path", None))
+        self.fillPathCheckBox.setText(_translate("MainWindow", "Fill Path", None))
+        self.circlePathCheckBox.setText(_translate("MainWindow", "Circle Path", None))
+        self.closePathCheckBox.setText(_translate("MainWindow", "Close Path", None))
+        self.chooseFileGroupBox.setTitle(_translate("MainWindow", "Choose File", None))
+        self.openFilePushButton.setText(_translate("MainWindow", "Open file", None))
+        self.buildPushButton.setText(_translate("MainWindow", "Build!", None))
+        self.menuMenu.setTitle(_translate("MainWindow", "&Menu", None))
+        self.menuHelp.setTitle(_translate("MainWindow", "&Help", None))
+        self.actionSetting.setText(_translate("MainWindow", "&Setting", None))
+        self.actionExit.setText(_translate("MainWindow", "E&xit", None))
+        self.actionSVGBuild_Help.setText(_translate("MainWindow", "SVGBuild &Help", None))
+        self.actionAbout.setText(_translate("MainWindow", "&About", None))
 
 import resource_rc
 

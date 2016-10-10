@@ -2,24 +2,19 @@
 #!/usr/bin/python
 
 import os
-import subprocess
-import shutil
 import time
-import sys
 import re
 import urlparse
 
 import interpolations
-import vectors
 from vectors import *
 
 from PyQt4 import QtCore
 from SVG import SVG
 from Camera import Camera
-from Settings import Settings
 from Node import Node
 from lxml import etree
-from PIL import Image, ImageDraw, ImageColor
+from PIL import Image
 
 class SVGBuild(QtCore.QObject):    
     finished = QtCore.pyqtSignal()

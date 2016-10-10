@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/fpermana/repositories/SVGBuild/ui/SettingsDialog.ui'
+# Form implementation generated from reading ui file 'C:\Users\Setiawan Paiman\eric\svgbuild-gui\ui\SettingsDialog.ui'
 #
-# Created: Wed Jun  4 20:17:58 2014
-#      by: PyQt4 UI code generator 4.9.1
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +11,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -48,10 +56,10 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", "Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.inkscapeLabel.setText(QtGui.QApplication.translate("Dialog", "Inkscape", None, QtGui.QApplication.UnicodeUTF8))
-        self.temporaryDirectoryLabel.setText(QtGui.QApplication.translate("Dialog", "Temporary Directory", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(_translate("Dialog", "Settings", None))
+        self.groupBox.setTitle(_translate("Dialog", "Settings", None))
+        self.inkscapeLabel.setText(_translate("Dialog", "Inkscape", None))
+        self.temporaryDirectoryLabel.setText(_translate("Dialog", "Temporary Directory", None))
 
 
 if __name__ == "__main__":
