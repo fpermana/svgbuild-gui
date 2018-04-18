@@ -16,7 +16,7 @@ class Settings(QtCore.QSettings):
         if os.name == 'nt':
             # only for latest inkscape > 0.48
             # add inkscape and imagemagick installation folder to path
-            self.inkscape = self.value("inkscape", r'inkscape.com').toString()
+            self.inkscape = self.value("inkscape", r'C:\Program Files\Inkscape\inkscape.com').toString()
             self.temporary = self.value("temporary", r't:\TEMP\_svg').toString()
 #            self.identify = self.value("identify", r'identify.exe').toString()
 #            self.convert = self.value("convert", r'convert.exe').toString()

@@ -26,13 +26,37 @@ class Camera(QtCore.QObject):
         self.time = 0
         self.area = [ 0., 0., 1., 1. ]
         self.temp = options['folder'] + '/' + options['temp']
-        self.width = float(options['width'])
-        self.height = float(options['height'])
+        
+        w = options['width']
+        uw = re.search(r'[a-zA-Z]*$',str(w))
+        if uw:
+            w = re.sub(r'[a-zA-Z]', '', str(w))
+            w = self.convertToPixel(uw.group(), float(w))
+
+        h = options['height']
+        uh = re.search(r'[a-zA-Z]*$',str(h))
+        if uh:
+            h = re.sub(r'[a-zA-Z]', '', str(h))
+            h = self.convertToPixel(uh.group(), float(h))
+        
+        self.width = float(w)
+        self.height = float(h)
         #self.dally = options['dally']
         #self.dolly = options['Dolly']
         #self.scale = options['zoom']
         self.options = options
         self.layout = { }
+        
+    def convertToPixel(self, unit, value):
+        if unit == "mm":
+            return value * 3.7795275591
+        elif unit == "cm":
+            return value * 10 * 3.7795275591
+        elif unit == "in":
+            return value * 96
+        elif unit == "pt":
+            return value / 3 * 4
+        return value
         
     def stopped(self):
         print 'camera stopped'
@@ -59,19 +83,29 @@ class Camera(QtCore.QObject):
         settings = ' '.join( [ '-z',
                                '--query-all',
                                ] )
-                               
         
-        command = ' '.join( [ str(Settings.inkscape), str(settings), '"%s"' % self.temp ] )
+        command = ' '.join( [ '"%s"' % str(Settings.inkscape), str(settings), '"%s"' % self.temp ] )
         #command = ' '.join( [ self.settings.inkscape, settings, self.temp ] )
         #command = QString('%1 %2 %3').arg(Settings.inkscape,).arg(settings).arg(self.temp)
-        #~ print command
+        print command
         result = Utils.qx(command)
-        #~ print result
+        print result
         result = result.split('\n')
         layout = self.layout
+        w = svg.root.attrib['width']
+        uw = re.search(r'[a-zA-Z]*$',w)
+        if uw:
+            w = re.sub(r'[a-zA-Z]', '', str(w))
+            w = self.convertToPixel(uw.group(), float(w))
         
-        page = [ float(svg.root.attrib['width']),
-                 float(svg.root.attrib['height']) ]
+        h = svg.root.attrib['height']
+        uh = re.search(r'[a-zA-Z]*$',h)
+        if uh:
+            h = re.sub(r'[a-zA-Z]', '', str(h))
+            h = self.convertToPixel(uh.group(), float(h))
+        
+        page = [ float(w),
+                 float(h) ]
         for line in result:
             fields = line.split(',')
             if len(fields) != 5: continue
@@ -171,8 +205,8 @@ class Camera(QtCore.QObject):
         of animation to spend on a nice swoop from one to the other.
         Number of frames is bounded.
         '''
-        page = [ float(svg.root.attrib['width']),
-                 float(svg.root.attrib['height']) ]
+        page = [ float(re.sub(r'[a-zA-Z]', '', svg.root.attrib['width'])),
+                 float(re.sub(r'[a-zA-Z]', '', svg.root.attrib['height'])) ]
         before = V( (before[2]+before[0])/2.,
                     (before[3]+before[1])/2. )
         after = V( (after[2]+after[0])/2.,
@@ -222,7 +256,7 @@ class Camera(QtCore.QObject):
                                        '--export-width=%d' % self.options['width'],
                                    ] )
 
-            command = ' '.join( [ str(Settings.inkscape), str(settings), '"%s"' % self.temp ] )
+            command = ' '.join( [ '"%s"' % str(Settings.inkscape), str(settings), '"%s"' % self.temp ] )
             #~ print command
             results = Utils.qx(command)
             

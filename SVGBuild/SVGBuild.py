@@ -54,7 +54,7 @@ class SVGBuild(QtCore.QObject):
     
     def __init__(self):
         super(SVGBuild, self).__init__()
-        self.camera = Camera(self.options)
+        #self.camera = Camera(self.options)
         
     def setFilename(self, filename):
         self.filename = filename
@@ -186,7 +186,7 @@ class SVGBuild(QtCore.QObject):
         label = 'http://www.inkscape.org/namespaces/inkscape}label'
         if label in entity.attrib:
             name = entity.attrib[label]
-        #print '%05d - Building up <%s id="%s"> (%s)...' % (camera.time, entity.tag, id, name)
+        print '%05d - Building up <%s id="%s"> (%s)...' % (camera.time, entity.tag, id, name)
         self.printText.emit('%05d - Building up <%s id="%s"> (%s)...' % (camera.time, entity.tag, id, name))
 
         nobuild = set([ '{http://www.w3.org/2000/svg}defs',
@@ -349,6 +349,9 @@ class SVGBuild(QtCore.QObject):
         '''Special progressive drawing of a path element.
         The path will be included one bezier element at a time until whole.'''
         if not 'd' in entity.attrib: return
+        id = entity.attrib['id']
+        name = id
+        print '%05d - Building up <%s id="%s"> (%s)...' % (camera.time, entity.tag, id, name)
         # replace style with our own style
         style = ''
         if 'style' in entity.attrib:
@@ -498,7 +501,7 @@ class SVGBuild(QtCore.QObject):
                 
                 nodes.append(node)
             
-            self.simplifyNodes(nodes)
+            #self.simplifyNodes(nodes)
             leftPath = []
             rightPath = []
             
