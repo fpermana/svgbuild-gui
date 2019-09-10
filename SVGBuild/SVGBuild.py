@@ -46,6 +46,8 @@ class SVGBuild(QtCore.QObject):
             'dolly': 50,
             'hold': 100,
             'background': '#FFFFFF',
+            'nobackground': False,
+            'objectline': False,
             'zoom': 6.,
             'xx': False
             }
@@ -137,12 +139,13 @@ class SVGBuild(QtCore.QObject):
             
             if self.options['fullpath']:
                 defs_element = self.svg.root.find('{http://www.w3.org/2000/svg}defs')
-                markers = defs_element.findall('{http://www.w3.org/2000/svg}marker')
+                if defs_element is not None:
+                    markers = defs_element.findall('{http://www.w3.org/2000/svg}marker')
                 
-                if len(markers) == 0:
-                    self.addMarker(defs_element, self.options['marker'])
-                else:
-                   self.marker = '%s' % markers[0].attrib['id']
+                    if len(markers) == 0:
+                        self.addMarker(defs_element, self.options['marker'])
+                    else:
+                       self.marker = '%s' % markers[0].attrib['id']
 
             self.printText.emit('Surveyed %d elements.' % elementCount)
             
