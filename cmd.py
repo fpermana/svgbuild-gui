@@ -59,7 +59,7 @@ class MainCMD():
                 self.svgbuild.setSingleOption(arg,getattr(options, arg))
     
     def run(self):
-        # print "testing"
+        print "run"
         self.svgbuild.setIsRunning(True)
         self.svgbuild.startBuildUp()
 
@@ -231,19 +231,20 @@ def main():
     parser.add_argument('filename', help='svg file name')
     parser.add_argument('--line', default='red', help='line color')
     parser.add_argument('--background', default='white', help='background color')
-    parser.add_argument('--fullpath', default=False, action='store_true', help='add marker or not')
-    parser.add_argument('--marker', default='', help='marker style')
+    parser.add_argument('--marker', default='', help='add marker style')
     parser.add_argument('--objectline', default=False, action='store_true', help='use object\'s line own property')
     parser.add_argument('--nobackground', default=False, action='store_true', help='save as transparent png')
-    parser.add_argument('--fillpath', default=False, help='fill color object while build point by point')
+    parser.add_argument('--fillpath', default=False, action='store_true', help='fill color object while build point by point')
     parser.add_argument('--circlepath', default=False, action='store_true', help='circular path')
     parser.add_argument('--closepath', default=False, action='store_true', help='closed path')
     parser.add_argument('--page', default=False, action='store_true', help='build page area')
     parser.add_argument('--top', default=False, action='store_true', help='bring object to top')
     parser.add_argument('--backward', default=False, action='store_true', help='build from last object')
     parser.add_argument('--path', default=False, action='store_true', help='build path point by point')
-    parser.add_argument('--from', default=0, help='starting frame number')
-    parser.add_argument('--until', default=99999, help='ending frame number')
+    parser.add_argument('--from', default=0, type=int, help='starting frame number')
+    parser.add_argument('--until', default=99999, type=int, help='ending frame number')
+    parser.add_argument('--zoom', default=6.0, type=float, help='zoom camera')
+    parser.add_argument('--continue', default=False, action='store_true', help='continue previous build if exist')
     options = parser.parse_args()
 
     wnd = MainCMD(options)

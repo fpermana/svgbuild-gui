@@ -28,7 +28,6 @@ class Node(QtCore.QObject):
         
     @staticmethod
     def getCharacterCount(command):
-        '''http://www.w3.org/TR/SVG11/paths.html'''
         characterCount = 0
         if command == "m" or command == "M":
             characterCount = 2
@@ -54,3 +53,30 @@ class Node(QtCore.QObject):
             characterCount = 1
             
         return characterCount
+
+    @staticmethod
+    def getCoordinateCount(command):
+        '''http://www.w3.org/TR/SVG11/paths.html'''
+        coordinateCount = 0
+        if command == "m" or command == "M":
+            coordinateCount = 1
+        elif command == "z" or command == "Z":
+            coordinateCount = 0
+        elif command == "l" or command == "L":
+            coordinateCount = 1
+        elif command == "h" or command == "H":
+            coordinateCount = 1
+        elif command == "v" or command == "V":
+            coordinateCount = 1
+        elif command == "c" or command == "C":
+            coordinateCount = 3
+        elif command == "s" or command == "S":
+            coordinateCount = 2
+        elif command == "q" or command == "Q":
+            coordinateCount = 2
+        elif command == "t" or command == "T":
+            coordinateCount = 1
+        elif command == "a" or command == "A":
+            coordinateCount = 4
+            
+        return coordinateCount
