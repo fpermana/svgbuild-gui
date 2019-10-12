@@ -375,7 +375,12 @@ class SVGBuild(QtCore.QObject):
         
             for j in range(0, coordinateCount):
                 if len(points) > 0:
-                    attrib.append(points.pop(0))
+                    point = points.pop(0)
+                    if ',' not in point and len(points) > 0 and command in 'cClLmMqQsStT':
+                        attrib.append("%s,%s" % (point,points.pop(0)))
+                    else:
+                        attrib.append(point)
+
 
             node.command = command
             node.attrib = attrib
@@ -522,14 +527,17 @@ class SVGBuild(QtCore.QObject):
         hairline = ';'.join("%s:%s" % (key,val) for (key,val) in hl.iteritems())
         #~ print hairline
 
-
-        built = [ ]
         entity.attrib['style'] = hairline
 
         # scan the control points
         # points = entity.attrib['d'].split(' ')
-        
-        d = re.sub(r'([a-zA-Z])([0-9])', r'\1 ', entity.attrib['d'])
+        # print entity.attrib['d']
+        ori_d = entity.attrib['d']
+        # d = re.sub(r'([lLmM])([0-9-]*) ([0-9-]*)', r'\1 \2,\3', entity.attrib['d'])
+        d = re.sub(r'([a-zA-Z])([a-zA-Z])', r'\1 \2', ori_d)
+        d = re.sub(r'([a-zA-Z])([0-9-])', r'\1 \2', d)
+        d = re.sub(r'([0-9])([a-zA-Z])', r'\1 \2', d)
+        # print d
 
         if self.options['circlepath']:
             d = self.convertToAbsolutePath(d)
@@ -567,7 +575,12 @@ class SVGBuild(QtCore.QObject):
             
                 for j in range(0, coordinateCount):
                     if len(points) > 0:
-                        attrib.append(points.pop(0))
+                        point = points.pop(0)
+                        if ',' not in point and len(points) > 0 and command in 'cClLmMqQsStT':
+                            attrib.append("%s,%s" % (point,points.pop(0)))
+                        else:
+                            attrib.append(point)
+
 
                 node.command = command
                 node.attrib = attrib
@@ -577,12 +590,12 @@ class SVGBuild(QtCore.QObject):
 
             leftPath = []
             rightPath = []
+            built = []
 
             while nodes:
                 if not self.isRunning: return
                 
                 if self.options['circlepath']:
-                    cleanPath = []
                     if len(nodes) > 0:
                         node = nodes.pop(0)
                         leftPath.append(node)
@@ -590,22 +603,27 @@ class SVGBuild(QtCore.QObject):
                         node = nodes.pop()
                         rightPath.insert(0, node)
 
-                    buildNodes = leftPath + cleanPath + rightPath
                     built = []
-                    for node in buildNodes:
+                    for node in leftPath:
                         built.append(node.getValue())
-
+                    for node in rightPath:
+                        built.append(node.getValue())
                 else:
                     node = nodes.pop(0)
                     built.append(node.getValue())
 
                 d = ' '.join(built).strip()
+
+                for p in range(pathIndex-1,-1,-1):
+                    d = paths[p] + ' ' + d
+
                 if self.options['closepath'] and not (d.endswith('z') or d.endswith('Z')):
                     d = d + ' z'
                 entity.attrib['d'] = d
                 camera.shoot(svg)
                 
-        # put the original style back
+        # put the original d and style back
+        entity.attrib['d'] = ori_d
         entity.attrib['style'] = style
         camera.shoot(svg)
 
