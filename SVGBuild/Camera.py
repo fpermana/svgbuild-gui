@@ -87,9 +87,9 @@ class Camera(QtCore.QObject):
         command = ' '.join( [ '"%s"' % str(Settings.inkscape), str(settings), '"%s"' % self.temp ] )
         #command = ' '.join( [ self.settings.inkscape, settings, self.temp ] )
         #command = QString('%1 %2 %3').arg(Settings.inkscape,).arg(settings).arg(self.temp)
-        print command
+        # print command
         result = Utils.qx(command)
-        print result
+        # print result
         result = result.split('\n')
         layout = self.layout
         w = svg.root.attrib['width']

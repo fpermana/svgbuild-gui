@@ -114,6 +114,8 @@ class SVGBuild(QtCore.QObject):
             if self.options['backward']:
                 self.options['folder'] += '_backward'
 
+            self.options['folder'] = os.path.dirname(self.filename) + '/' + self.options['folder']
+
             if not os.path.exists(self.options['folder']):
                 os.mkdir(self.options['folder'])
                 
@@ -344,6 +346,87 @@ class SVGBuild(QtCore.QObject):
 #                node.showCommand = True
                 node.attrib = [ point[0],  point[1] ]
 
+    def convertToAbsolutePath(self, d):
+        '''convert relative path to absolute path'''
+        nodes = []
+        command = ""
+        point = ""
+        coordinateCount = 0
+        showCommand = False
+        
+        points = d.strip().split(' ')
+
+        node = None
+        # convert from point to Node
+        while points:
+            if not self.isRunning: return
+            
+            point = points[0]
+            
+            node = Node()
+            attrib = []
+            if re.match(r'^[a-zA-Z]$', point):
+                command = point
+                showCommand = True
+                coordinateCount = Node.getCoordinateCount(command)
+                points.pop(0)
+            # else:
+                # showCommand = False
+        
+            for j in range(0, coordinateCount):
+                if len(points) > 0:
+                    attrib.append(points.pop(0))
+
+            node.command = command
+            node.attrib = attrib
+            node.showCommand = showCommand
+            
+            nodes.append(node)
+
+        x = None
+        y = None
+        for node in nodes:
+            if len(node.attrib) > 0:
+                coordinate = node.attrib[-1]
+                xy = coordinate.split(",")
+                if not x and not y:
+                    x = float(xy[0])
+                    y = float(xy[1])
+                elif node.command == "h":
+                    x += float(xy[0])
+                    node.attrib[-1] = str(x)
+                elif node.command == "v":
+                    y += float(xy[0])
+                    node.attrib[-1] = str(y)
+                elif node.command == "H":
+                    x = float(xy[0])
+                elif node.command == "V":
+                    y = float(xy[0])
+                elif node.command.islower():
+                    for i in range(len(node.attrib)):
+                        coordinate = node.attrib[i]
+                        xy = coordinate.split(",")
+                        if len(xy) == 2:
+                            xy[0] = str(float(xy[0]) + x)
+                            xy[1] = str(float(xy[1]) + y)
+                            node.attrib[i] = ','.join(xy)
+                            if i == (len(node.attrib)-1):
+                                x = float(xy[0])
+                                y = float(xy[1])
+                elif node.command.isupper():
+                    x = float(xy[0])
+                    y = float(xy[1])
+
+            node.command = node.command.upper()
+
+        points = []
+        for node in nodes:
+            points.append(node.getValue())
+
+        d = ' '.join(points).strip()
+
+        return d
+
     def build_path(self, svg, camera, entity, options):
         '''Special progressive drawing of a path element.
         The path will be included one bezier element at a time until whole.'''
@@ -445,8 +528,13 @@ class SVGBuild(QtCore.QObject):
 
         # scan the control points
         # points = entity.attrib['d'].split(' ')
+        
+        d = re.sub(r'([a-zA-Z])([0-9])', r'\1 ', entity.attrib['d'])
 
-        paths = re.sub(r'([a-zA-Z])([0-9])', r'\1 ', entity.attrib['d'].strip()).replace('z', 'z#').replace('Z', 'Z#').split('#')
+        if self.options['circlepath']:
+            d = self.convertToAbsolutePath(d)
+
+        paths = d.replace('z', 'z#').replace('Z', 'Z#').split('#')
         for pathIndex, path in enumerate(paths):
             if len(path) == 0:
                 continue
@@ -489,10 +577,12 @@ class SVGBuild(QtCore.QObject):
 
             leftPath = []
             rightPath = []
+
             while nodes:
                 if not self.isRunning: return
                 
                 if self.options['circlepath']:
+                    cleanPath = []
                     if len(nodes) > 0:
                         node = nodes.pop(0)
                         leftPath.append(node)
@@ -500,16 +590,7 @@ class SVGBuild(QtCore.QObject):
                         node = nodes.pop()
                         rightPath.insert(0, node)
 
-                    #     if len(nodes) > 0:
-                    #         line = Node()
-                    #         line.command = 'l' if node.command.islower() else 'L'
-                    #         line.attrib = node.attrib
-                    #         line.showCommand = True
-                    #         cleanPath.append(line)
-
-                    # buildNodes = leftPath + cleanPath + rightPath
-
-                    buildNodes = leftPath + rightPath
+                    buildNodes = leftPath + cleanPath + rightPath
                     built = []
                     for node in buildNodes:
                         built.append(node.getValue())

@@ -46,13 +46,13 @@ class MainCMD():
         for arg in vars(options):
             if arg == 'filename':
                 filename = getattr(options, arg)
-                workingDirectory = re.sub(r'[^\/]*$', '', filename)
-                foldername = re.sub(r'\.[^\.]*$', '', filename)
+                # workingDirectory = re.sub(r'[^\/]*$', '', filename)
+                # foldername = re.sub(r'\.[^\.]*$', '', filename)
                 self.svgbuild.setFilename(filename)
-                self.svgbuild.setSingleOption("folder",  foldername)
+                # self.svgbuild.setSingleOption("folder",  foldername)
 
-                print 'filename', filename
-                print 'foldername', foldername
+                # print 'filename', filename
+                # print 'foldername', foldername
 
             else:
                 print arg, getattr(options, arg)
@@ -229,6 +229,7 @@ def main():
 
     parser = argparse.ArgumentParser(description='SVGBuild command line interface')
     parser.add_argument('filename', help='svg file name')
+    parser.add_argument('--folder', default='movie', help='folder name')
     parser.add_argument('--line', default='red', help='line color')
     parser.add_argument('--background', default='white', help='background color')
     parser.add_argument('--marker', default='', help='add marker style')
