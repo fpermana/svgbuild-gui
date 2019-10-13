@@ -36,7 +36,8 @@ class SVGBuild(QtCore.QObject):
             'page': False,
             'combine': False,
             'camera': False,
-            'line' : '#000000',
+            # 'line' : '#000000',
+            'line' : '',
             'frame' : '#FF0000',
             'text': False,
             'backward': False,
@@ -103,7 +104,7 @@ class SVGBuild(QtCore.QObject):
         folder_name = [ self.options['folder'], self.options['name'] ]
         
         if not os.path.exists(self.filename):
-               print 'SVG files were not found.'
+            print 'SVG files were not found.'
         else:
             fileBaseName = os.path.splitext(os.path.basename(self.filename))
 
@@ -319,34 +320,6 @@ class SVGBuild(QtCore.QObject):
         # replace the original image reference
         entity.attrib[href] = img
         camera.shoot(svg)
-        
-    def simplifyNodes(self, nodes):
-        '''remove v, V, h, and H command'''
-        point = []
-        for node in nodes:
-            node.showCommand = True
-            characterCount = Node.getCharacterCount(node.command)
-            if characterCount > 1:
-                point = node.getTarget()
-            elif characterCount == 1:
-                if node.command == "v":
-                    point[0] = "0"
-                    point[1] = node.attrib[0]
-                elif node.command == "V":
-                    point[1] = node.attrib[0]
-                elif node.command == "h":
-                    point[0] = node.attrib[0]
-                    point[1] = "0"
-                elif node.command == "H":
-                    point[0] = node.attrib[0]
-                    
-                if node.command == "v" or node.command == "h":
-                    node.command = "l"
-                elif node.command == "V" or node.command == "H":
-                    node.command = "L"
-                    
-#                node.showCommand = True
-                node.attrib = [ point[0],  point[1] ]
 
     def convertToAbsolutePath(self, d):
         '''convert relative path to absolute path'''
@@ -487,10 +460,10 @@ class SVGBuild(QtCore.QObject):
         if self.options['objectline']:
             if 'line' in style_dict:
                 hl['stroke'] = style_dict['line']
-            else:
+            elif self.options['line']:
 #                hl['stroke'] = '#000000'
                 hl['stroke'] = self.options['line']
-        else:
+        elif self.options['line']:
             hl['stroke'] = self.options['line']
 
         if self.options['marker']:

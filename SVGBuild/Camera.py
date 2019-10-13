@@ -97,12 +97,14 @@ class Camera(QtCore.QObject):
         if uw:
             w = re.sub(r'[a-zA-Z]', '', str(w))
             w = self.convertToPixel(uw.group(), float(w))
+            svg.root.attrib['width'] = str(w)
         
         h = svg.root.attrib['height']
         uh = re.search(r'[a-zA-Z]*$',h)
         if uh:
             h = re.sub(r'[a-zA-Z]', '', str(h))
             h = self.convertToPixel(uh.group(), float(h))
+            svg.root.attrib['height'] = str(h)
         
         page = [ float(w),
                  float(h) ]

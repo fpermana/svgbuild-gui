@@ -230,7 +230,7 @@ def main():
     parser = argparse.ArgumentParser(description='SVGBuild command line interface')
     parser.add_argument('filename', help='svg file name')
     parser.add_argument('--folder', default='movie', help='folder name')
-    parser.add_argument('--line', default='red', help='line color')
+    parser.add_argument('--line', default='', help='line color')
     parser.add_argument('--background', default='white', help='background color')
     parser.add_argument('--marker', default='', help='add marker style')
     parser.add_argument('--objectline', default=False, action='store_true', help='use object\'s line own property')
