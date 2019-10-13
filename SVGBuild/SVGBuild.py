@@ -94,6 +94,8 @@ class SVGBuild(QtCore.QObject):
             print 'Zoom limiting value is invalid; must be positive.'
         if self.options['xx']:
             self.options['from'] = self.options['until'] = -1
+        if self.options['fullpath']:
+            self.options['path'] = True
 
         # overall preparations
         overall = time.time()
@@ -491,7 +493,7 @@ class SVGBuild(QtCore.QObject):
         else:
             hl['stroke'] = self.options['line']
 
-        if self.options['fullpath']:
+        if self.options['marker']:
 #            hl.append('marker-end:url(#%s)' % self.marker)
             hl['marker-end'] = 'url(#%s)' % self.marker
             #~ hl.append('marker-start:url(#Arrow1Lstart)')
@@ -594,8 +596,12 @@ class SVGBuild(QtCore.QObject):
 
             while nodes:
                 if not self.isRunning: return
-                
-                if self.options['circlepath']:
+
+                if not self.options['fullpath']:
+                    while nodes:
+                        node = nodes.pop(0)
+                        built.append(node.getValue())
+                elif self.options['circlepath']:
                     if len(nodes) > 0:
                         node = nodes.pop(0)
                         leftPath.append(node)
