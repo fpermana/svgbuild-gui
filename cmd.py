@@ -247,6 +247,7 @@ def main():
     parser.add_argument('--until', default=99999, type=int, help='ending frame number')
     parser.add_argument('--zoom', default=6.0, type=float, help='zoom camera')
     parser.add_argument('--continue', default=False, action='store_true', help='continue previous build if exist')
+    parser.add_argument('--restart', default=False, action='store_true', help='delete previous build if exist')
     options = parser.parse_args()
 
     wnd = MainCMD(options)

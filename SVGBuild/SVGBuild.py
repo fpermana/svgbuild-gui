@@ -50,6 +50,7 @@ class SVGBuild(QtCore.QObject):
             'nobackground': False,
             'objectline': False,
             'continue': False,
+            'restart': False,
             'zoom': 6.,
             'xx': False
             }
@@ -121,6 +122,26 @@ class SVGBuild(QtCore.QObject):
 
             if not os.path.exists(self.options['folder']):
                 os.mkdir(self.options['folder'])
+            else:
+                files = os.listdir(self.options['folder'])
+                if self.options['continue']:
+                    current = 0
+                    for file in files:
+                        if file.endswith('.png'):
+                            number = re.sub(r'\.png$','',file)[-5:].lstrip('0')
+                            if not number:
+                                number = '0'
+
+                            number = int(number)
+                            if number > current:
+                                current = number
+                    self.options['from'] = 0 if (current < 3) else (current - 2)
+
+                elif self.options['restart']:
+                    for file in files:
+                        if file.endswith('.png'):
+                            os.remove(self.options['folder'] + '/' + file)
+                    self.options['from'] = 0
                 
             start = time.time()
             self.printText.emit('Starting buildup of %s...' % self.filename)
