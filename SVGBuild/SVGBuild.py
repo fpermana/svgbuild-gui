@@ -502,7 +502,7 @@ class SVGBuild(QtCore.QObject):
 #            hl.append('marker-end:url(#%s)' % self.marker)
             hl['fill-opacity'] = '1'
             
-        if self.options['objectfill']:
+        if self.options['objectcolor']:
             if 'fill' in style_dict:
                 hl['fill'] = style_dict['fill']
             elif self.options['color']:
