@@ -55,7 +55,7 @@ class MainCMD():
                 # print 'foldername', foldername
 
             else:
-                print arg, getattr(options, arg)
+                # print arg, getattr(options, arg)
                 self.svgbuild.setSingleOption(arg,getattr(options, arg))
     
     def run(self):
@@ -231,9 +231,11 @@ def main():
     parser.add_argument('filename', help='svg file name')
     parser.add_argument('--folder', default='movie', help='folder name')
     parser.add_argument('--line', default='', help='line color')
+    parser.add_argument('--color', default='', help='object color')
     parser.add_argument('--background', default='white', help='background color')
     parser.add_argument('--marker', default='', help='add marker style')
     parser.add_argument('--objectline', default=False, action='store_true', help='use object\'s line own property')
+    parser.add_argument('--objectcolor', default=False, action='store_true', help='use object\'s color own property')
     parser.add_argument('--nobackground', default=False, action='store_true', help='save as transparent png')
     parser.add_argument('--path', default=False, action='store_true', help='build path')
     parser.add_argument('--fullpath', default=False, action='store_true', help='create path point by point')

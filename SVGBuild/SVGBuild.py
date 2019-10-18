@@ -35,6 +35,7 @@ class SVGBuild(QtCore.QObject):
             'top': False,
             'page': False,
             'combine': False,
+            'color': '',
             'camera': False,
             # 'line' : '#000000',
             'line' : '',
@@ -49,6 +50,7 @@ class SVGBuild(QtCore.QObject):
             'background': '#FFFFFF',
             'nobackground': False,
             'objectline': False,
+            'objectcolor': False,
             'continue': False,
             'restart': False,
             'zoom': 6.,
@@ -366,8 +368,8 @@ class SVGBuild(QtCore.QObject):
                 showCommand = True
                 coordinateCount = Node.getCoordinateCount(command)
                 points.pop(0)
-            # else:
-                # showCommand = False
+            elif command == "M" or command == "m":
+                showCommand = False
         
             for j in range(0, coordinateCount):
                 if len(points) > 0:
@@ -500,6 +502,13 @@ class SVGBuild(QtCore.QObject):
 #            hl.append('marker-end:url(#%s)' % self.marker)
             hl['fill-opacity'] = '1'
             
+        if self.options['objectfill']:
+            if 'fill' in style_dict:
+                hl['fill'] = style_dict['fill']
+            elif self.options['color']:
+                hl['fill'] = self.options['color']
+        elif self.options['color']:
+            hl['fill'] = self.options['color']
         '''hl = [
         'opacity:1', 'overflow:visible',
         'fill:none',
@@ -521,7 +530,7 @@ class SVGBuild(QtCore.QObject):
         
 #        hairline = ';'.join(hl)
         hairline = ';'.join("%s:%s" % (key,val) for (key,val) in hl.iteritems())
-        #~ print hairline
+        # print hairline
 
         entity.attrib['style'] = hairline
 
@@ -566,8 +575,8 @@ class SVGBuild(QtCore.QObject):
                     showCommand = True
                     coordinateCount = Node.getCoordinateCount(command)
                     points.pop(0)
-                # else:
-                    # showCommand = False
+                elif command == "M" or command == "m":
+                    showCommand = False
             
                 for j in range(0, coordinateCount):
                     if len(points) > 0:
