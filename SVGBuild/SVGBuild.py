@@ -621,10 +621,16 @@ class SVGBuild(QtCore.QObject):
                     node = nodes.pop(0)
                     built.append(node.getValue())
 
+                if self.camera.time < self.options['from'] or self.camera.time > self.options['until']:
+                    self.camera.time += 1
+                    continue
+
                 d = ' '.join(built).strip()
 
-                for p in range(pathIndex-1,-1,-1):
-                    d = paths[p] + ' ' + d
+                # for p in range(pathIndex-1,-1,-1):
+                    # d = paths[p] + ' ' + d
+                previousPaths = paths[0:pathIndex]
+                d = ' '.join(previousPaths).strip() + ' ' + d
 
                 if self.options['closepath'] and not (d.endswith('z') or d.endswith('Z')):
                     d = d + ' z'
@@ -669,6 +675,8 @@ class SVGBuild(QtCore.QObject):
             marker_element.set('style', 'overflow:visible')
             marker_element.set('refX', '0.0')
             marker_element.set('orient', 'auto')
+            # marker_element.set('markerWidth','1')
+            # marker_element.set('markerHeight','1')
             marker_element.set('id', 'EmptyDiamondL')
 
             marker_path = etree.SubElement(marker_element, '{http://www.w3.org/2000/svg}path', id ='mark0001')
@@ -707,6 +715,24 @@ class SVGBuild(QtCore.QObject):
             marker_path.set('d', "M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z ")
             marker_path.set('style', "fill-rule:evenodd;fill:#FFFFFF;stroke:#000000;stroke-width:1.0pt")
             marker_path.set('transform', "scale(0.8) translate(-6,0)")
+
+            self.marker = '%s' % marker_element.attrib['id']
+
+        elif name == 'dot':
+            marker_element = etree.SubElement(element, 'marker', id = 'dot')
+            marker_element.set('viewBox', '0 0 10 10')
+            marker_element.set('refY', '5.0')
+            marker_element.set('refX', '5.0')
+            marker_element.set('markerWidth', '5')
+            marker_element.set('markerHeight', '5')
+            marker_element.set('id', 'dot')
+
+
+            marker_path = etree.SubElement(marker_element, '{http://www.w3.org/2000/svg}circle', id ='mark0002')
+            marker_path.set('cx', '5')
+            marker_path.set('cy', '5')
+            marker_path.set('r', '5')
+            marker_path.set('fill', 'red')
 
             self.marker = '%s' % marker_element.attrib['id']
         else:
