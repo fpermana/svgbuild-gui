@@ -392,7 +392,7 @@ class SVGBuild(QtCore.QObject):
             if len(node.attrib) > 0:
                 coordinate = node.attrib[-1]
                 xy = coordinate.split(",")
-                if not x and not y:
+                if x is None and y is None:
                     x = float(xy[0])
                     y = float(xy[1])
                 elif node.command == "h":
