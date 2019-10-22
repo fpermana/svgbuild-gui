@@ -538,6 +538,13 @@ class SVGBuild(QtCore.QObject):
         # points = entity.attrib['d'].split(' ')
         # print entity.attrib['d']
         ori_d = entity.attrib['d']
+        # print ori_d
+        # TODO: case for 10e-6, 2.52e-4, etc
+        # es = re.findall(r'[0-9-]*e[0-9-]*', ori_d)
+        # for e in es:
+            # nums = e.split('e')
+            # print nums, (float(nums[0]) * (10 ^ ))
+            # 2.52 * 10 ^ -4
         # d = re.sub(r'([lLmM])([0-9-]*) ([0-9-]*)', r'\1 \2,\3', entity.attrib['d'])
         d = re.sub(r'([a-zA-Z])([a-zA-Z])', r'\1 \2', ori_d)
         d = re.sub(r'([a-zA-Z])([0-9-])', r'\1 \2', d)
