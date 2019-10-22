@@ -541,9 +541,12 @@ class SVGBuild(QtCore.QObject):
         # print ori_d
         # TODO: case for 10e-6, 2.52e-4, etc
         # es = re.findall(r'[0-9-]*e[0-9-]*', ori_d)
+        # es = list(dict.fromkeys(es))
+        # es = list(set(es))
         # for e in es:
             # nums = e.split('e')
             # print nums, (float(nums[0]) * (10 ^ ))
+            # format(math.pow(float(nums[0]),int(nums[1])), "10.2f")
             # 2.52 * 10 ^ -4
         # d = re.sub(r'([lLmM])([0-9-]*) ([0-9-]*)', r'\1 \2,\3', entity.attrib['d'])
         d = re.sub(r'([a-zA-Z])([a-zA-Z])', r'\1 \2', ori_d)
