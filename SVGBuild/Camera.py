@@ -228,7 +228,8 @@ class Camera(QtCore.QObject):
         # to fix imprecise image output sizes.
         # Also applies background color to avoid alpha movie problems.
         if self.options['from'] <= self.time <= self.options['until']:
-            time.sleep(0.250)
+            # time.sleep(0.250)
+            time.sleep(0.01)
             self._write(svg)
             output = '%s/%s%05d.png' % (self.options['folder'],
                                         self.options['name'],
