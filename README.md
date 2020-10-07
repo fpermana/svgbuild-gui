@@ -1,3 +1,5 @@
+This is unmaintained/deprecated. Please go to (https://github.com/fpermana/svgbuild-py3) for latest version without GUI.
+
 SVGBuild is an open source python script that was created by Ed Halley in 2008 (http://halley.cc/code/).
 By default it could be used to produce sequence of images from an Inkscape's SVG files.
 These sequence of images later could be used to create video.
